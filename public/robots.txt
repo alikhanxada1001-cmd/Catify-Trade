@@ -1,0 +1,26 @@
+User-agent: *
+Allow: /
+Allow: /shop
+Allow: /wholesale
+Allow: /product/
+Allow: /suppliers
+Allow: /supplier/
+Allow: /import-services
+Allow: /export-services
+Allow: /request-quote
+Allow: /about
+Allow: /contact
+Allow: /faqs
+Allow: /shipping-policy
+Allow: /refund-policy
+Allow: /privacy-policy
+Allow: /terms
+Allow: /ak-dev-studio
+
+Disallow: /admin
+Disallow: /checkout
+Disallow: /cart
+Disallow: /order-success
+Disallow: /dashboard
+
+Sitemap: /sitemap.xml

@@ -1,0 +1,6 @@
+{
+  "name": "Catify Trade",
+  "description": "International Import & Export E-Commerce Marketplace - Global wholesale trading, retail sourcing, customs logistics, multi-currency trade, and verified supplier networks.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
