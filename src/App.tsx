@@ -30,7 +30,11 @@ const MainLayout: React.FC = () => {
   // Keep the admin area completely separate from the public storefront layout.
   // No public header, announcement bar, homepage, cart drawer, or footer is rendered here.
   if (currentPage === 'admin-dashboard') {
-    return isAdminAuthenticated ? <AdminDashboardPage /> : <AdminLoginPage />;
+    return (
+      <Suspense fallback={<div className="min-h-screen grid place-items-center text-sm text-slate-500" role="status">Loading admin…</div>}>
+        {isAdminAuthenticated ? <AdminDashboardPage /> : <AdminLoginPage />}
+      </Suspense>
+    );
   }
 
   const renderCurrentPage = () => {
