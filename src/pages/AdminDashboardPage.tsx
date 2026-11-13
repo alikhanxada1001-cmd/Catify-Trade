@@ -247,7 +247,7 @@ export const AdminDashboardPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Hamburger-triggered admin navigation drawer */}
+      {/* ChatGPT-style responsive admin navigation drawer */}
       {isSidebarOpen && (
         <div className="fixed inset-0 z-[60]">
           <button
@@ -267,41 +267,36 @@ export const AdminDashboardPage: React.FC = () => {
               </button>
             </div>
             <nav className="flex flex-col gap-1 pt-4 text-sm font-semibold">
-        <div className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm">
-          <div className="px-3 pt-2 pb-3">
-            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">Workspace</p>
-            <p className="mt-1 text-sm font-extrabold text-slate-900">Admin Navigation</p>
-          </div>
-          <nav className="flex lg:flex-col gap-1 overflow-x-auto lg:overflow-visible pb-1 lg:pb-0 text-xs font-semibold">
-        {[
-          { id: 'overview', label: 'Financial Overview', icon: LayoutDashboard },
-          { id: 'products', label: `Products (${products.length})`, icon: Package },
-          { id: 'orders', label: `Orders (${orders.length})`, icon: ShoppingCart },
-          { id: 'rfqs', label: `RFQs & Quotes (${rfqs.length})`, icon: FileSpreadsheet },
-          { id: 'inquiries', label: `Trade Leads (${inquiries.length})`, icon: Truck },
-          { id: 'currencies', label: `Currencies & Rates (${currencies.length})`, icon: DollarSign },
-          { id: 'settings', label: 'Store Settings & Brand', icon: Settings },
-          { id: 'logs', label: `Audit Trail (${adminLogs.length})`, icon: ShieldAlert },
-        ].map((tab) => {
-          const Icon = tab.icon;
-          return (
-            <button
-              key={tab.id}
-              onClick={() => { setActiveTab(tab.id as any); setIsSidebarOpen(false); }}
-              className={`px-3.5 py-3 flex items-center gap-3 whitespace-nowrap rounded-xl transition-all duration-200 text-left w-full ${
-                activeTab === tab.id
-                  ? 'bg-blue-950 text-white shadow-md shadow-blue-950/15 font-bold'
-                  : 'text-slate-600 hover:bg-slate-100 hover:text-slate-950'
-              }`}
-            >
-              <span className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${activeTab === tab.id ? 'bg-white/10 text-amber-300' : 'bg-slate-100 text-slate-500'}`}>
-                <Icon className="w-4 h-4" />
-              </span>
-              <span className="truncate">{tab.label}</span>
-              {activeTab === tab.id && <span className="ml-auto hidden lg:block w-1.5 h-1.5 rounded-full bg-amber-400" />}
-            </button>
-          );
-        })}
+              {[
+                { id: 'overview', label: 'Financial Overview', icon: LayoutDashboard },
+                { id: 'products', label: `Products (${products.length})`, icon: Package },
+                { id: 'orders', label: `Orders (${orders.length})`, icon: ShoppingCart },
+                { id: 'rfqs', label: `RFQs & Quotes (${rfqs.length})`, icon: FileSpreadsheet },
+                { id: 'inquiries', label: `Trade Leads (${inquiries.length})`, icon: Truck },
+                { id: 'currencies', label: `Currencies & Rates (${currencies.length})`, icon: DollarSign },
+                { id: 'settings', label: 'Store Settings & Brand', icon: Settings },
+                { id: 'logs', label: `Audit Trail (${adminLogs.length})`, icon: ShieldAlert },
+              ].map((tab) => {
+                const Icon = tab.icon;
+                return (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    onClick={() => { setActiveTab(tab.id as any); setIsSidebarOpen(false); }}
+                    className={`px-3.5 py-3 flex items-center gap-3 rounded-xl transition-all duration-200 text-left w-full ${
+                      activeTab === tab.id
+                        ? 'bg-blue-950 text-white shadow-md shadow-blue-950/15 font-bold'
+                        : 'text-slate-600 hover:bg-slate-100 hover:text-slate-950'
+                    }`}
+                  >
+                    <span className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${activeTab === tab.id ? 'bg-white/10 text-amber-300' : 'bg-slate-100 text-slate-500'}`}>
+                      <Icon className="w-4 h-4" />
+                    </span>
+                    <span className="truncate">{tab.label}</span>
+                    {activeTab === tab.id && <span className="ml-auto w-1.5 h-1.5 rounded-full bg-amber-400" />}
+                  </button>
+                );
+              })}
             </nav>
           </aside>
         </div>
