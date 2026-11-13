@@ -189,38 +189,40 @@ export const AdminDashboardPage: React.FC = () => {
 
   return (
     <div className="max-w-[1600px] mx-auto px-3 sm:px-5 lg:px-7 py-5 sm:py-7 space-y-6">
-      {/* Admin Title Bar */}
-      <div className="bg-gradient-to-r from-blue-950 via-slate-900 to-blue-950 text-white rounded-3xl p-5 sm:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 sm:gap-6 border border-slate-800 shadow-sm">
-        <div className="flex items-center gap-3 sm:gap-4">
+      {/* Compact, mobile-first Admin Title Bar */}
+      <div className="bg-gradient-to-r from-blue-950 via-slate-900 to-blue-950 text-white rounded-2xl sm:rounded-3xl p-4 sm:p-8 flex flex-col gap-4 sm:gap-6 border border-slate-800 shadow-sm">
+        <div className="flex items-center gap-3 sm:gap-4 min-w-0">
           <button
             type="button"
             onClick={() => setIsSidebarOpen(true)}
             aria-label="Open admin navigation"
             aria-expanded={isSidebarOpen}
-            className="w-11 h-11 rounded-xl border border-white/15 bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors shrink-0"
+            className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl border border-white/15 bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors shrink-0"
           >
             <Menu className="w-6 h-6" />
           </button>
-          <div className="w-12 h-12 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center font-extrabold text-lg shrink-0">
+          <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center font-extrabold text-lg shrink-0">
             CT
           </div>
-          <div className="min-w-0">
-            <div className="flex items-center gap-2 text-xs font-semibold text-amber-400">
+          <div className="min-w-0 flex-1">
+            <div className="flex items-center gap-2 text-[10px] sm:text-xs font-semibold text-amber-400">
               <ShieldAlert className="w-3.5 h-3.5 shrink-0" />
               <span>Central Management Console</span>
             </div>
-            <h1 className="text-xl sm:text-2xl font-extrabold text-white">Catify Trade Admin Operations</h1>
-            <p className="text-xs text-slate-300 mt-0.5 break-all">Admin: tardecatify@gmail.com · Live Multi-Currency Database</p>
+            <h1 className="text-lg sm:text-2xl font-extrabold leading-tight text-white">
+              Catify Trade Admin<span className="hidden sm:inline"> Operations</span>
+            </h1>
+            <p className="hidden sm:block text-xs text-slate-300 mt-1 break-all">Admin: tardecatify@gmail.com · Live Multi-Currency Database</p>
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2 sm:gap-3 w-full md:w-auto">
+        <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2 sm:gap-3 w-full">
           <button
             onClick={() => {
               setUserRole('customer');
               navigateTo('home');
             }}
-            className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold rounded-xl border border-slate-700 transition-colors"
+            className="min-h-11 px-3 sm:px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white text-xs sm:text-sm font-semibold rounded-xl border border-slate-700 transition-colors"
           >
             ← View Storefront
           </button>
@@ -230,18 +232,18 @@ export const AdminDashboardPage: React.FC = () => {
                 resetAllData();
               }
             }}
-            className="px-3 py-2 bg-rose-950/60 hover:bg-rose-900 text-rose-300 text-xs font-semibold rounded-xl border border-rose-800/50 transition-colors flex items-center gap-1.5"
+            className="min-h-11 px-3 sm:px-4 py-2 bg-rose-950/60 hover:bg-rose-900 text-rose-300 text-xs sm:text-sm font-semibold rounded-xl border border-rose-800/50 transition-colors flex items-center justify-center gap-1.5"
             title="Reset to initial data"
           >
-            <RotateCcw className="w-3.5 h-3.5" />
+            <RotateCcw className="w-3.5 h-3.5 shrink-0" />
             <span>Reset Data</span>
           </button>
           <button
             onClick={logoutAdmin}
-            className="px-3.5 py-2 bg-amber-400 hover:bg-amber-500 text-slate-950 text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5"
+            className="col-span-2 sm:col-span-1 min-h-11 sm:ml-auto px-4 py-2 bg-amber-400 hover:bg-amber-500 text-slate-950 text-sm font-bold rounded-xl transition-colors flex items-center justify-center gap-1.5"
             title="Lock Admin Console and Sign Out"
           >
-            <LogOut className="w-3.5 h-3.5" />
+            <LogOut className="w-4 h-4" />
             <span>Log Out</span>
           </button>
         </div>
