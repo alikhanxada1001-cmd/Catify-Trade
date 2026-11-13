@@ -201,9 +201,11 @@ export const AdminDashboardPage: React.FC = () => {
           >
             <Menu className="w-6 h-6" />
           </button>
-          <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center font-extrabold text-lg shrink-0">
-            CT
-          </div>
+          <img
+            src="/assets/aistudio/Catify_Trade_Circular_Logo_df00bcb5.png"
+            alt="Catify Trade official logo"
+            className="w-11 h-11 sm:w-12 sm:h-12 rounded-full object-contain bg-white ring-2 ring-amber-400/70 shadow-md shrink-0"
+          />
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2 text-[10px] sm:text-xs font-semibold text-amber-400">
               <ShieldAlert className="w-3.5 h-3.5 shrink-0" />
