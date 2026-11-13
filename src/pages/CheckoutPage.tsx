@@ -146,17 +146,17 @@ export const CheckoutPage: React.FC = () => {
     // Determine carrier based on freight method
     const carrier =
       effectiveShippingMethod === 'domestic_courier'
-        ? 'TCS / Leopards Express Domestic Courier (Pakistan)'
+        ? 'Carrier assignment pending'
         : effectiveShippingMethod === 'air_express'
-        ? 'DHL Global Forwarding Express Air'
-        : 'Maersk Ocean Container Logistics (LCL/FCL)';
+        ? 'Carrier assignment pending'
+        : 'Carrier assignment pending';
 
     const trackingNumber =
       effectiveShippingMethod === 'domestic_courier'
-        ? `TCS-PK-${Math.floor(10000000 + Math.random() * 90000000)}`
+        ? `CAT-${Date.now()}`
         : effectiveShippingMethod === 'air_express'
-        ? `DHL-AIR-${Math.floor(100000000 + Math.random() * 900000000)}`
-        : `MSK-OCN-${Math.floor(100000 + Math.random() * 900000)}`;
+        ? `CAT-${Date.now()}`
+        : `CAT-${Date.now()}`;
 
     const deliveryDays =
       effectiveShippingMethod === 'domestic_courier' ? 3 : effectiveShippingMethod === 'air_express' ? 8 : 26;
@@ -193,7 +193,7 @@ export const CheckoutPage: React.FC = () => {
         taxIdOrVat,
       },
       paymentMethod,
-      paymentStatus: paymentMethod === 'international_card' ? 'paid' : 'pending_verification',
+      paymentStatus: 'pending_verification',
       orderStatus: 'pending',
       trackingNumber,
       carrier,
