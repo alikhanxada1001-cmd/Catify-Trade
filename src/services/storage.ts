@@ -81,6 +81,7 @@ export class TradeStorageService {
     // Replace the previous sample catalogue once so existing browser sessions see the new demo products.
     if (safeGet<string>(STORAGE_KEYS.CATALOG_VERSION, '') !== 'apparel-demo-v1') {
       safeSet(STORAGE_KEYS.PRODUCTS, INITIAL_PRODUCTS);
+      safeSet(STORAGE_KEYS.CATEGORIES, INITIAL_CATEGORIES);
       safeSet(STORAGE_KEYS.CATALOG_VERSION, 'apparel-demo-v1');
       return INITIAL_PRODUCTS;
     }
