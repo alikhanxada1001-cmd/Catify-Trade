@@ -27,6 +27,7 @@ import {
   Ship,
   Plane,
   LogOut,
+  Menu,
 } from 'lucide-react';
 import { Product, Order, OrderStatus, RFQ, TradeInquiry, Coupon, CurrencyCode, Currency } from '../types';
 import { AdminLoginPage } from './AdminLoginPage';
@@ -58,6 +59,7 @@ export const AdminDashboardPage: React.FC = () => {
     logoutAdmin,
   } = useTrade();
 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<
     'overview' | 'products' | 'orders' | 'rfqs' | 'inquiries' | 'currencies' | 'settings' | 'logs'
   >('overview');
@@ -189,7 +191,16 @@ export const AdminDashboardPage: React.FC = () => {
     <div className="max-w-[1600px] mx-auto px-3 sm:px-5 lg:px-7 py-5 sm:py-7 space-y-6">
       {/* Admin Title Bar */}
       <div className="bg-gradient-to-r from-blue-950 via-slate-900 to-blue-950 text-white rounded-3xl p-5 sm:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 sm:gap-6 border border-slate-800 shadow-sm">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 sm:gap-4">
+          <button
+            type="button"
+            onClick={() => setIsSidebarOpen(true)}
+            aria-label="Open admin navigation"
+            aria-expanded={isSidebarOpen}
+            className="w-11 h-11 rounded-xl border border-white/15 bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors shrink-0"
+          >
+            <Menu className="w-6 h-6" />
+          </button>
           <div className="w-12 h-12 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center font-extrabold text-lg shrink-0">
             CT
           </div>
@@ -236,9 +247,26 @@ export const AdminDashboardPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Admin workspace: responsive sidebar navigation */}
-      <div className="flex flex-col lg:flex-row gap-5 lg:gap-7 items-start">
-      <aside className="w-full lg:w-64 xl:w-72 shrink-0 lg:sticky lg:top-5">
+      {/* Hamburger-triggered admin navigation drawer */}
+      {isSidebarOpen && (
+        <div className="fixed inset-0 z-[60]">
+          <button
+            type="button"
+            aria-label="Close admin navigation"
+            onClick={() => setIsSidebarOpen(false)}
+            className="absolute inset-0 bg-slate-950/60 backdrop-blur-sm"
+          />
+          <aside className="absolute left-0 top-0 bottom-0 w-[min(86vw,320px)] bg-white shadow-2xl border-r border-slate-200 p-4 overflow-y-auto animate-in slide-in-from-left duration-200">
+            <div className="flex items-center justify-between px-2 pt-2 pb-5 border-b border-slate-100">
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">Catify Trade</p>
+                <p className="mt-1 text-base font-extrabold text-slate-900">Admin Menu</p>
+              </div>
+              <button type="button" onClick={() => setIsSidebarOpen(false)} aria-label="Close menu" className="w-9 h-9 rounded-lg hover:bg-slate-100 text-slate-500 flex items-center justify-center">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <nav className="flex flex-col gap-1 pt-4 text-sm font-semibold">
         <div className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm">
           <div className="px-3 pt-2 pb-3">
             <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">Workspace</p>
@@ -259,8 +287,8 @@ export const AdminDashboardPage: React.FC = () => {
           return (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
-              className={`px-3.5 py-3 flex items-center gap-3 whitespace-nowrap rounded-xl transition-all duration-200 text-left min-w-max lg:min-w-0 lg:w-full ${
+              onClick={() => { setActiveTab(tab.id as any); setIsSidebarOpen(false); }}
+              className={`px-3.5 py-3 flex items-center gap-3 whitespace-nowrap rounded-xl transition-all duration-200 text-left w-full ${
                 activeTab === tab.id
                   ? 'bg-blue-950 text-white shadow-md shadow-blue-950/15 font-bold'
                   : 'text-slate-600 hover:bg-slate-100 hover:text-slate-950'
@@ -274,9 +302,11 @@ export const AdminDashboardPage: React.FC = () => {
             </button>
           );
         })}
-          </nav>
+            </nav>
+          </aside>
         </div>
-      </aside>
+      )}
+      <div className="w-full">
       <main className="flex-1 min-w-0 w-full space-y-6">
 
       {/* TAB 1: Financial Overview */}
