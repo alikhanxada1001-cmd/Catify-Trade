@@ -1,0 +1,12 @@
+name = "catifytrade-api"
+main = "worker/index.js"
+compatibility_date = "2026-11-13"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "catifytrade"
+database_id = "b14f350e-8c15-42f7-a3bb-2e163c00310c"
+
+[[r2_buckets]]
+binding = "ASSETS"
+bucket_name = "catify-trade-assets"
