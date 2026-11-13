@@ -186,7 +186,7 @@ export const AdminDashboardPage: React.FC = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="max-w-[1600px] mx-auto px-3 sm:px-5 lg:px-7 py-5 sm:py-7 space-y-6">
       {/* Admin Title Bar */}
       <div className="bg-gradient-to-r from-blue-950 via-slate-900 to-blue-950 text-white rounded-3xl p-5 sm:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 sm:gap-6 border border-slate-800 shadow-sm">
         <div className="flex items-center gap-4">
@@ -236,8 +236,15 @@ export const AdminDashboardPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Admin Subnav */}
-      <div className="flex items-center gap-2 border-b border-slate-200 overflow-x-auto pb-px text-xs font-semibold">
+      {/* Admin workspace: responsive sidebar navigation */}
+      <div className="flex flex-col lg:flex-row gap-5 lg:gap-7 items-start">
+      <aside className="w-full lg:w-64 xl:w-72 shrink-0 lg:sticky lg:top-5">
+        <div className="rounded-2xl border border-slate-200 bg-white p-3 shadow-sm">
+          <div className="px-3 pt-2 pb-3">
+            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400">Workspace</p>
+            <p className="mt-1 text-sm font-extrabold text-slate-900">Admin Navigation</p>
+          </div>
+          <nav className="flex lg:flex-col gap-1 overflow-x-auto lg:overflow-visible pb-1 lg:pb-0 text-xs font-semibold">
         {[
           { id: 'overview', label: 'Financial Overview', icon: LayoutDashboard },
           { id: 'products', label: `Products (${products.length})`, icon: Package },
@@ -253,18 +260,24 @@ export const AdminDashboardPage: React.FC = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as any)}
-              className={`px-4 py-3 flex items-center gap-2 whitespace-nowrap border-b-2 transition-colors ${
+              className={`px-3.5 py-3 flex items-center gap-3 whitespace-nowrap rounded-xl transition-all duration-200 text-left min-w-max lg:min-w-0 lg:w-full ${
                 activeTab === tab.id
-                  ? 'border-blue-950 text-blue-950 font-bold'
-                  : 'border-transparent text-slate-500 hover:text-slate-800'
+                  ? 'bg-blue-950 text-white shadow-md shadow-blue-950/15 font-bold'
+                  : 'text-slate-600 hover:bg-slate-100 hover:text-slate-950'
               }`}
             >
-              <Icon className="w-3.5 h-3.5" />
-              <span>{tab.label}</span>
+              <span className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${activeTab === tab.id ? 'bg-white/10 text-amber-300' : 'bg-slate-100 text-slate-500'}`}>
+                <Icon className="w-4 h-4" />
+              </span>
+              <span className="truncate">{tab.label}</span>
+              {activeTab === tab.id && <span className="ml-auto hidden lg:block w-1.5 h-1.5 rounded-full bg-amber-400" />}
             </button>
           );
         })}
-      </div>
+          </nav>
+        </div>
+      </aside>
+      <main className="flex-1 min-w-0 w-full space-y-6">
 
       {/* TAB 1: Financial Overview */}
       {activeTab === 'overview' && (
@@ -718,6 +731,9 @@ export const AdminDashboardPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      </main>
+      </div>
 
       {/* Edit Product Modal */}
       {isProductModalOpen && editingProduct && (
