@@ -34,13 +34,10 @@ import { AkDevStudioPage } from './pages/AkDevStudioPage';
 const MainLayout: React.FC = () => {
   const { currentPage, isAdminAuthenticated } = useTrade();
 
-  if (currentPage === 'admin-dashboard' && !isAdminAuthenticated) {
-    return (
-      <>
-        <SeoManager />
-        <AdminLoginPage />
-      </>
-    );
+  // Keep the admin area completely separate from the public storefront layout.
+  // No public header, announcement bar, homepage, cart drawer, or footer is rendered here.
+  if (currentPage === 'admin-dashboard') {
+    return isAdminAuthenticated ? <AdminDashboardPage /> : <AdminLoginPage />;
   }
 
   const renderCurrentPage = () => {
