@@ -166,7 +166,7 @@ export const INITIAL_CATEGORIES: Category[] = [
   { id: 'cat-accessories', name: 'Caps & Accessories', slug: 'caps-accessories', description: 'Everyday caps and useful fashion accessories.', image: 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=900', iconName: 'ShoppingBag', productCount: 1, isTradeSpecialty: false },
 ];
 
-export const INITIAL_SUPPLIERS: Supplier[] = [export const INITIAL_SUPPLIERS: Supplier[] = [
+export const INITIAL_SUPPLIERS: Supplier[] = [
   {
     id: 'sup-apex-machinery',
     name: 'Apex Precision Engineering GmbH',
