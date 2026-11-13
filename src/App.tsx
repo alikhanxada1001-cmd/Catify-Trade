@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { TradeProvider, useTrade } from './context/TradeContext';
 import { TopAnnouncementBar } from './components/layout/TopAnnouncementBar';
 import { Header } from './components/layout/Header';
@@ -8,28 +8,21 @@ import { RFQModal } from './components/rfq/RFQModal';
 import { SeoManager } from './components/seo/SeoManager';
 
 // Pages
-import { HomePage } from './pages/HomePage';
-import { ShopPage } from './pages/ShopPage';
-import { ProductDetailPage } from './pages/ProductDetailPage';
-import { WholesalePage } from './pages/WholesalePage';
-import { ImportServicesPage, ExportServicesPage } from './pages/ImportExportServicesPages';
-import { SuppliersPage, SupplierDetailPage } from './pages/SuppliersPages';
-import { RequestQuotePage } from './pages/RequestQuotePage';
-import { TrackOrderPage } from './pages/TrackOrderPage';
-import { CheckoutPage } from './pages/CheckoutPage';
-import { OrderSuccessPage } from './pages/OrderSuccessPage';
-import { CustomerDashboardPage } from './pages/CustomerDashboardPage';
-import { AdminDashboardPage } from './pages/AdminDashboardPage';
-import { AdminLoginPage } from './pages/AdminLoginPage';
-import {
-  AboutPage,
-  ContactPage,
-  FAQsPage,
-  ShippingPolicyPage,
-  RefundPolicyPage,
-  TermsPrivacyPage,
-} from './pages/InformationalPages';
-import { AkDevStudioPage } from './pages/AkDevStudioPage';
+const HomePage = lazy(() => import('./pages/HomePage').then((m) => ({ default: m.HomePage })));
+const ShopPage = lazy(() => import('./pages/ShopPage').then((m) => ({ default: m.ShopPage })));
+const ProductDetailPage = lazy(() => import('./pages/ProductDetailPage').then((m) => ({ default: m.ProductDetailPage })));
+const WholesalePage = lazy(() => import('./pages/WholesalePage').then((m) => ({ default: m.WholesalePage })));
+const ImportExportPages = lazy(() => import('./pages/ImportExportServicesPages'));
+const SupplierPages = lazy(() => import('./pages/SuppliersPages'));
+const RequestQuotePage = lazy(() => import('./pages/RequestQuotePage').then((m) => ({ default: m.RequestQuotePage })));
+const TrackOrderPage = lazy(() => import('./pages/TrackOrderPage').then((m) => ({ default: m.TrackOrderPage })));
+const CheckoutPage = lazy(() => import('./pages/CheckoutPage').then((m) => ({ default: m.CheckoutPage })));
+const OrderSuccessPage = lazy(() => import('./pages/OrderSuccessPage').then((m) => ({ default: m.OrderSuccessPage })));
+const CustomerDashboardPage = lazy(() => import('./pages/CustomerDashboardPage').then((m) => ({ default: m.CustomerDashboardPage })));
+const AdminDashboardPage = lazy(() => import('./pages/AdminDashboardPage').then((m) => ({ default: m.AdminDashboardPage })));
+const AdminLoginPage = lazy(() => import('./pages/AdminLoginPage').then((m) => ({ default: m.AdminLoginPage })));
+const InformationalPages = lazy(() => import('./pages/InformationalPages'));
+const AkDevStudioPage = lazy(() => import('./pages/AkDevStudioPage').then((m) => ({ default: m.AkDevStudioPage })));
 
 const MainLayout: React.FC = () => {
   const { currentPage, isAdminAuthenticated } = useTrade();
@@ -51,13 +44,13 @@ const MainLayout: React.FC = () => {
       case 'wholesale':
         return <WholesalePage />;
       case 'import-services':
-        return <ImportServicesPage />;
+        return <ImportExportPages.ImportServicesPage />;
       case 'export-services':
-        return <ExportServicesPage />;
+        return <ImportExportPages.ExportServicesPage />;
       case 'suppliers':
-        return <SuppliersPage />;
+        return <SupplierPages.SuppliersPage />;
       case 'supplier-detail':
-        return <SupplierDetailPage />;
+        return <SupplierPages.SupplierDetailPage />;
       case 'request-quote':
         return <RequestQuotePage />;
       case 'track-order':
@@ -72,19 +65,19 @@ const MainLayout: React.FC = () => {
       case 'admin-dashboard':
         return isAdminAuthenticated ? <AdminDashboardPage /> : <AdminLoginPage />;
       case 'about':
-        return <AboutPage />;
+        return <InformationalPages.AboutPage />;
       case 'contact':
-        return <ContactPage />;
+        return <InformationalPages.ContactPage />;
       case 'faqs':
-        return <FAQsPage />;
+        return <InformationalPages.FAQsPage />;
       case 'shipping-policy':
-        return <ShippingPolicyPage />;
+        return <InformationalPages.ShippingPolicyPage />;
       case 'refund-policy':
-        return <RefundPolicyPage />;
+        return <InformationalPages.RefundPolicyPage />;
       case 'privacy-policy':
-        return <TermsPrivacyPage type="privacy" />;
+        return <InformationalPages.TermsPrivacyPage type="privacy" />;
       case 'terms':
-        return <TermsPrivacyPage type="terms" />;
+        return <InformationalPages.TermsPrivacyPage type="terms" />;
       case 'ak-dev-studio':
         return <AkDevStudioPage />;
       default:
@@ -97,7 +90,11 @@ const MainLayout: React.FC = () => {
       <SeoManager />
       <TopAnnouncementBar />
       <Header />
-      <main className="flex-1">{renderCurrentPage()}</main>
+      <main className="flex-1">
+        <Suspense fallback={<div className="min-h-[45vh] grid place-items-center text-sm text-slate-500" role="status">Loading page…</div>}>
+          {renderCurrentPage()}
+        </Suspense>
+      </main>
       <Footer />
 
       {/* Global Overlays & Slide-outs */}
@@ -134,7 +131,7 @@ class AppErrorBoundary extends React.Component<
             <button
               onClick={() => {
                 try {
-                  localStorage.clear();
+                  Object.keys(localStorage).filter((key) => key.startsWith('catify_')).forEach((key) => localStorage.removeItem(key));
                 } catch {}
                 window.location.reload();
               }}
