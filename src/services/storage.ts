@@ -47,6 +47,7 @@ const STORAGE_KEYS = {
   ACTIVE_CURRENCY: 'catify_active_currency',
   ACTIVE_COUNTRY: 'catify_active_country',
   CURRENT_USER: 'catify_current_user',
+  CATALOG_VERSION: 'catify_catalog_version',
 };
 
 function safeGet<T>(key: string, fallback: T): T {
@@ -77,6 +78,12 @@ function safeSet<T>(key: string, value: T): void {
 export class TradeStorageService {
   // PRODUCTS
   static getProducts(): Product[] {
+    // Replace the previous sample catalogue once so existing browser sessions see the new demo products.
+    if (safeGet<string>(STORAGE_KEYS.CATALOG_VERSION, '') !== 'apparel-demo-v1') {
+      safeSet(STORAGE_KEYS.PRODUCTS, INITIAL_PRODUCTS);
+      safeSet(STORAGE_KEYS.CATALOG_VERSION, 'apparel-demo-v1');
+      return INITIAL_PRODUCTS;
+    }
     return safeGet<Product[]>(STORAGE_KEYS.PRODUCTS, INITIAL_PRODUCTS);
   }
 
@@ -105,6 +112,10 @@ export class TradeStorageService {
 
   // CATEGORIES
   static getCategories(): Category[] {
+    if (safeGet<string>(STORAGE_KEYS.CATALOG_VERSION, '') !== 'apparel-demo-v1') {
+      safeSet(STORAGE_KEYS.CATEGORIES, INITIAL_CATEGORIES);
+      return INITIAL_CATEGORIES;
+    }
     return safeGet<Category[]>(STORAGE_KEYS.CATEGORIES, INITIAL_CATEGORIES);
   }
 
