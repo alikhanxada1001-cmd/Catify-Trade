@@ -79,10 +79,16 @@ export class TradeStorageService {
   // PRODUCTS
   static getProducts(): Product[] {
     // Replace the previous sample catalogue once so existing browser sessions see the new demo products.
-    if (safeGet<string>(STORAGE_KEYS.CATALOG_VERSION, '') !== 'apparel-demo-v1') {
+    if (safeGet<string>(STORAGE_KEYS.CATALOG_VERSION, '') !== 'apparel-demo-v2') {
       safeSet(STORAGE_KEYS.PRODUCTS, INITIAL_PRODUCTS);
       safeSet(STORAGE_KEYS.CATEGORIES, INITIAL_CATEGORIES);
-      safeSet(STORAGE_KEYS.CATALOG_VERSION, 'apparel-demo-v1');
+      safeSet(STORAGE_KEYS.CATALOG_VERSION, 'apparel-demo-v2');
+      // Remove legacy fabricated local demo records; real inquiries now live in Cloudflare D1.
+      try {
+        [STORAGE_KEYS.SUPPLIERS, STORAGE_KEYS.ORDERS, STORAGE_KEYS.RFQS, STORAGE_KEYS.INQUIRIES, STORAGE_KEYS.COUPONS, STORAGE_KEYS.REVIEWS, STORAGE_KEYS.LOGS].forEach((key) => localStorage.removeItem(key));
+      } catch (error) {
+        console.warn('Legacy demo records could not be cleared from this browser.', error);
+      }
       return INITIAL_PRODUCTS;
     }
     return safeGet<Product[]>(STORAGE_KEYS.PRODUCTS, INITIAL_PRODUCTS);
