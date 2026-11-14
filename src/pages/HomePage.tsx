@@ -342,7 +342,12 @@ export const HomePage: React.FC = () => {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {suppliers.length === 0 ? (
+          <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-10 text-center">
+            <p className="text-sm font-semibold text-slate-800">No verified supplier profiles published yet.</p>
+            <p className="mt-1 text-xs text-slate-500">We only publish supplier details after checks are completed.</p>
+          </div>
+        ) : <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {suppliers.slice(0, 3).map((supplier) => (
             <div
               key={supplier.id}
@@ -387,7 +392,7 @@ export const HomePage: React.FC = () => {
               </div>
             </div>
           ))}
-        </div>
+        </div>}
       </section>
 
       {/* 7. Why Choose Catify Trade (Adjacency & Quantitative Rigor) */}
