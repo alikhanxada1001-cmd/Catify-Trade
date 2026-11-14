@@ -70,8 +70,8 @@ export interface TradeContextType {
   products: Product[];
   categories: Category[];
   suppliers: Supplier[];
-  saveProduct: (product: Product) => void;
-  deleteProduct: (id: string) => void;
+  saveProduct: (product: Product) => Promise<void>;
+  deleteProduct: (id: string) => Promise<void>;
 
   // Cart
   cart: CartItem[];
