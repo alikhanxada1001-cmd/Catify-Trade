@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTrade, PageRoute } from '../../context/TradeContext';
 import {
   Mail,
@@ -17,17 +17,6 @@ import {
 
 export const Footer: React.FC = () => {
   const { settings, navigateTo } = useTrade();
-  const [emailInput, setEmailInput] = useState('');
-  const [subscribed, setSubscribed] = useState(false);
-
-  const handleSubscribe = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (emailInput.trim()) {
-      setSubscribed(true);
-      setEmailInput('');
-      setTimeout(() => setSubscribed(false), 5000);
-    }
-  };
 
   return (
     <footer className="bg-slate-950 text-slate-300 border-t border-slate-800">
@@ -40,8 +29,8 @@ export const Footer: React.FC = () => {
                 <Globe className="w-5 h-5" />
               </div>
               <div>
-                <h4 className="font-semibold text-white text-sm mb-0.5">160+ Countries Covered</h4>
-                <p className="text-slate-400">Direct container &amp; air express freight to all major global ports and air hubs.</p>
+                <h4 className="font-semibold text-white text-sm mb-0.5">Product Discovery</h4>
+                <p className="text-slate-400">Explore sample product listings and send wholesale enquiries.</p>
               </div>
             </div>
 
@@ -50,8 +39,8 @@ export const Footer: React.FC = () => {
                 <ShieldCheck className="w-5 h-5" />
               </div>
               <div>
-                <h4 className="font-semibold text-white text-sm mb-0.5">Verified Supply Chain</h4>
-                <p className="text-slate-400">Audited factory credentials, ISO certifications, and pre-shipment quality inspection.</p>
+                <h4 className="font-semibold text-white text-sm mb-0.5">Supplier Checks</h4>
+                <p className="text-slate-400">Supplier profiles are listed only after identity and business details have been checked.</p>
               </div>
             </div>
 
@@ -60,8 +49,8 @@ export const Footer: React.FC = () => {
                 <Lock className="w-5 h-5" />
               </div>
               <div>
-                <h4 className="font-semibold text-white text-sm mb-0.5">Secure Escrow &amp; Bank Wire</h4>
-                <p className="text-slate-400">SWIFT MT103 wire transfer, Letter of Credit (L/C), and verified commercial invoicing.</p>
+                <h4 className="font-semibold text-white text-sm mb-0.5">Payment Safety</h4>
+                <p className="text-slate-400">No online payment gateway or escrow is currently connected. Verify payment details independently.</p>
               </div>
             </div>
 
@@ -71,7 +60,7 @@ export const Footer: React.FC = () => {
               </div>
               <div>
                 <h4 className="font-semibold text-white text-sm mb-0.5">Customs Compliance</h4>
-                <p className="text-slate-400">Complete commercial invoice, packing list, certificate of origin, and HS classification.</p>
+                <p className="text-slate-400">Confirm customs and document requirements with the relevant authority or a licensed broker.</p>
               </div>
             </div>
           </div>
@@ -92,13 +81,12 @@ export const Footer: React.FC = () => {
               />
               <div>
                 <span className="text-lg font-bold text-white tracking-tight">CATIFY TRADE</span>
-                <p className="text-xs text-amber-400/90 font-medium">International Import &amp; Export Marketplace</p>
+                <p className="text-xs text-amber-400/90 font-medium">Wholesale Product Discovery &amp; Sourcing Enquiries</p>
               </div>
             </div>
 
             <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
-              Your premier cross-border trading partner. Connecting vetted international manufacturers, industrial buyers,
-              and retail importers worldwide with seamless multi-currency settlement and door-to-door customs logistics.
+              Browse sample catalogue listings and submit product, quantity and destination details for a quotation. Supplier availability and final terms are confirmed after review.
             </p>
 
             <div className="pt-2 space-y-2 text-xs">
@@ -121,39 +109,16 @@ export const Footer: React.FC = () => {
               </div>
               <div className="flex items-center gap-2 text-slate-400">
                 <Building2 className="w-4 h-4 text-slate-500 shrink-0" />
-                <span>Trade Operations &amp; Port Clearing Network</span>
+                <span>Product Enquiry Support</span>
               </div>
             </div>
 
             {/* Newsletter Subscription */}
             <div className="pt-4 max-w-md">
-              <label htmlFor="newsletter-email" className="block text-xs font-semibold text-slate-200 mb-1.5">
-                Global Trade &amp; Tariff Intelligence
-              </label>
-              <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-2">
-                <input
-                  id="newsletter-email"
-                  type="email"
-                  value={emailInput}
-                  onChange={(e) => setEmailInput(e.target.value)}
-                  placeholder="Enter your corporate email..."
-                  required
-                  className="flex-1 min-w-0 px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-amber-400"
-                />
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-slate-950 font-semibold text-xs rounded-lg transition-colors flex items-center justify-center gap-1.5 shrink-0"
-                >
-                  <Send className="w-3.5 h-3.5" />
-                  <span>Subscribe</span>
-                </button>
-              </form>
-              {subscribed && (
-                <p className="mt-2 text-xs text-emerald-400 flex items-center gap-1">
-                  <CheckCircle2 className="w-3.5 h-3.5" />
-                  <span>Thank you! You are subscribed to Catify Trade alerts.</span>
-                </p>
-              )}
+              <p className="text-xs font-semibold text-slate-200 mb-1.5">Have a product or sourcing question?</p>
+              <a href={`mailto:${settings.email}?subject=Catify%20Trade%20Enquiry`} className="inline-flex items-center gap-2 rounded-lg bg-amber-500 px-4 py-2 text-xs font-bold text-slate-950 hover:bg-amber-400">
+                <Mail className="h-3.5 w-3.5" /> Email the team
+              </a>
             </div>
           </div>
 
@@ -178,12 +143,12 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <button onClick={() => navigateTo('suppliers')} className="hover:text-amber-400 transition-colors">
-                  Verified Suppliers
+                  Supplier Directory
                 </button>
               </li>
               <li>
                 <button onClick={() => navigateTo('track-order')} className="hover:text-amber-400 transition-colors">
-                  Live Cargo Tracking
+                  Order Tracking Information
                 </button>
               </li>
               <li>
@@ -200,22 +165,22 @@ export const Footer: React.FC = () => {
             <ul className="space-y-2.5 text-xs">
               <li>
                 <button onClick={() => navigateTo('import-services')} className="hover:text-amber-400 transition-colors">
-                  Import Customs Clearance
+                  Import Documentation Guidance
                 </button>
               </li>
               <li>
                 <button onClick={() => navigateTo('export-services')} className="hover:text-amber-400 transition-colors">
-                  Export Compliance &amp; Freight
+                  Export Enquiry
                 </button>
               </li>
               <li>
                 <button onClick={() => navigateTo('shipping-policy')} className="hover:text-amber-400 transition-colors">
-                  Ocean FCL / LCL Shipping
+                  Sea Freight Information
                 </button>
               </li>
               <li>
                 <button onClick={() => navigateTo('shipping-policy')} className="hover:text-amber-400 transition-colors">
-                  Air Cargo Express
+                  Air Freight Information
                 </button>
               </li>
               <li>
