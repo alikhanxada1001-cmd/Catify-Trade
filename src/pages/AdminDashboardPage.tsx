@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTrade } from '../context/TradeContext';
 import {
   LayoutDashboard,
@@ -28,6 +28,9 @@ import {
   Plane,
   LogOut,
   Menu,
+  Images,
+  Copy,
+  RefreshCw,
 } from 'lucide-react';
 import { Product, Order, OrderStatus, RFQ, TradeInquiry, Coupon, CurrencyCode, Currency } from '../types';
 import { AdminLoginPage } from './AdminLoginPage';
@@ -39,6 +42,8 @@ export const AdminDashboardPage: React.FC = () => {
     saveProduct,
     deleteProduct,
     uploadProductImage,
+    listMediaAssets,
+    deleteMediaAsset,
     orders,
     updateOrder,
     rfqs,
@@ -63,7 +68,7 @@ export const AdminDashboardPage: React.FC = () => {
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<
-    'overview' | 'products' | 'orders' | 'rfqs' | 'inquiries' | 'currencies' | 'settings' | 'logs'
+    'overview' | 'products' | 'media' | 'orders' | 'rfqs' | 'inquiries' | 'currencies' | 'settings' | 'logs'
   >('overview');
 
   // Product Add / Edit Modal state
@@ -72,6 +77,11 @@ export const AdminDashboardPage: React.FC = () => {
   const [productActionError, setProductActionError] = useState('');
   const [isProductSaving, setIsProductSaving] = useState(false);
   const [isImageUploading, setIsImageUploading] = useState(false);
+  const [mediaItems, setMediaItems] = useState<Array<{ key: string; size: number; uploaded: string | null; url: string }>>([]);
+  const [mediaLoading, setMediaLoading] = useState(false);
+  const [mediaError, setMediaError] = useState('');
+  const [mediaNotice, setMediaNotice] = useState('');
+
   const [rfqActionError, setRfqActionError] = useState('');
 
   // Order Update Modal state
@@ -288,6 +298,7 @@ export const AdminDashboardPage: React.FC = () => {
               {[
                 { id: 'overview', label: 'Financial Overview', icon: LayoutDashboard },
                 { id: 'products', label: `Products (${products.length})`, icon: Package },
+                { id: 'media', label: 'Media Library', icon: Images },
                 { id: 'orders', label: `Orders (${orders.length})`, icon: ShoppingCart },
                 { id: 'rfqs', label: `RFQs & Quotes (${rfqs.length})`, icon: FileSpreadsheet },
                 { id: 'inquiries', label: `Trade Leads (${inquiries.length})`, icon: Truck },
@@ -390,6 +401,61 @@ export const AdminDashboardPage: React.FC = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {activeTab === 'media' && (
+        <section className="space-y-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <h2 className="text-lg font-extrabold text-slate-900">Media Library</h2>
+              <p className="text-sm text-slate-500">Images stored in Catify-Trade Cloudflare R2 storage.</p>
+            </div>
+            <button type="button" onClick={async () => {
+              setMediaLoading(true); setMediaError(''); setMediaNotice('');
+              try { setMediaItems(await listMediaAssets()); }
+              catch (error) { setMediaError(error instanceof Error ? error.message : 'Could not load media.'); }
+              finally { setMediaLoading(false); }
+            }} className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-950 px-4 py-2.5 text-sm font-bold text-white">
+              <RefreshCw className={`h-4 w-4 ${mediaLoading ? 'animate-spin' : ''}`} /> Refresh Library
+            </button>
+          </div>
+          {mediaError && <p role="alert" className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm text-rose-700">{mediaError}</p>}
+          {mediaNotice && <p className="rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-700">{mediaNotice}</p>}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            {mediaItems.map((item) => (
+              <article key={item.key} className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+                <img src={item.url} alt={item.key} loading="lazy" className="h-36 w-full bg-slate-100 object-cover" />
+                <div className="space-y-2 p-3">
+                  <p className="truncate text-xs font-semibold text-slate-700" title={item.key}>{item.key}</p>
+                  <p className="text-[11px] text-slate-400">{(item.size / 1024).toFixed(1)} KB</p>
+                  <div className="flex gap-2">
+                    <button type="button" onClick={async () => {
+                      try { await navigator.clipboard.writeText(item.url); setMediaNotice('Image URL copied.'); }
+                      catch { setMediaError('Clipboard access unavailable in this browser.'); }
+                    }} className="flex-1 inline-flex items-center justify-center gap-1 rounded-lg border border-slate-200 px-2 py-2 text-xs font-semibold text-slate-700">
+                      <Copy className="h-3.5 w-3.5" /> Copy URL
+                    </button>
+                    <button type="button" onClick={async () => {
+                      if (!window.confirm('Permanently delete this image from R2? Product listings using it may show a broken image.')) return;
+                      try { await deleteMediaAsset(item.key); setMediaItems(current => current.filter(x => x.key !== item.key)); setMediaNotice('Image deleted from storage.'); }
+                      catch (error) { setMediaError(error instanceof Error ? error.message : 'Image could not be deleted.'); }
+                    }} aria-label="Delete image" className="rounded-lg border border-rose-200 px-2 py-2 text-rose-600">
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+          {!mediaLoading && mediaItems.length === 0 && !mediaError && (
+            <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
+              <Images className="mx-auto mb-3 h-8 w-8 text-slate-400" />
+              <p className="font-semibold text-slate-700">No uploaded images found</p>
+              <p className="mt-1 text-sm text-slate-500">Upload an image from Products → Add/Edit Product. It will appear here.</p>
+            </div>
+          )}
+          <p className="text-xs text-slate-500">Note: Deleting an image removes the R2 object permanently. Remove it only when no product uses it.</p>
+        </section>
       )}
 
       {/* TAB 2: Products Management (Full CRUD) */}
