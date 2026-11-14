@@ -333,20 +333,14 @@ export const RefundPolicyPage: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
       <div className="space-y-5 text-xs text-slate-600 leading-relaxed bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-xs">
-        <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900">Commercial Return &amp; Refund Policy</h1>
-        <p>
-          International trade contracts are protected by our pre-shipment quality verification guarantee and marine cargo insurance protocols.
-        </p>
-
-        <h3 className="text-sm font-bold text-slate-900 pt-2">1. Inspection Period upon Port Discharge</h3>
-        <p>
-          Consignees have seven (7) business days from destination customs clearance to inspect the cargo and report any dimensional variance, structural damage, or non-conformance exceeding technical specifications.
-        </p>
-
-        <h3 className="text-sm font-bold text-slate-900 pt-2">2. Non-Conforming Cargo Resolution</h3>
-        <p>
-          In the event of verified transit damage or specification discrepancy confirmed by an independent surveyor, Catify Trade issues a direct replacement consignment or a financial credit note / wire refund to the buyer&apos;s originating account.
-        </p>
+        <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900">Order, Cancellation &amp; Refund Information</h1>
+        <p>No online payments or completed purchases are currently processed through this website. Product listings and displayed prices are samples for enquiry purposes only.</p>
+        <h3 className="text-sm font-bold text-slate-900 pt-2">1. Before placing an order</h3>
+        <p>Confirm the supplier identity, product specification, quantity, total price, shipping charges, duties, delivery terms and payment beneficiary independently. Do not pay based only on a website listing or an unverified message.</p>
+        <h3 className="text-sm font-bold text-slate-900 pt-2">2. Cancellation and refunds</h3>
+        <p>If a future transaction is agreed, its cancellation, inspection, return and refund terms must be written into the signed order or sales contract before payment. This website does not currently provide escrow, insurance or guaranteed refunds.</p>
+        <h3 className="text-sm font-bold text-slate-900 pt-2">3. Questions</h3>
+        <p>For a product enquiry, use the quotation form or contact details shown on the Contact page.</p>
       </div>
     </div>
   );
