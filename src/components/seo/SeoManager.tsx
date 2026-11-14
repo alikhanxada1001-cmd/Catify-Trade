@@ -501,7 +501,7 @@ export function getPageSeoMetadata({
         { q: 'Does Catify Trade calculate live customs duties?', a: 'No. Duties and taxes depend on destination rules and product classification. Confirm current charges with the destination customs authority or a licensed broker.' },
         { q: 'Which shipping options may be available?', a: 'Courier, air and sea freight may be options depending on route and shipment size. Costs, transit estimates and carrier availability must be confirmed in writing.' },
         { q: 'Are suppliers verified?', a: 'No supplier profiles are currently published. Supplier details will be listed only after identity and business credentials have been checked.' },
-      ];;
+      ];
 
       return {
         title: 'Import, Export & Wholesale FAQs | Catify Trade',
