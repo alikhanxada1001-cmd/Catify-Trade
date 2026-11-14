@@ -400,10 +400,11 @@ export const ExportServicesPage: React.FC = () => {
 
               <button
                 type="submit"
+                disabled={isSubmitting}
                 className="w-full py-3 bg-blue-950 hover:bg-blue-900 text-white text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-2"
               >
                 <Send className="w-3.5 h-3.5 text-amber-400" />
-                <span>Submit Export Freight Booking Inquiry</span>
+                <span>{isSubmitting ? 'Submitting…' : 'Send Export Enquiry'}</span>
               </button>
             </form>
           )}
