@@ -121,8 +121,8 @@ export interface TradeContextType {
 
   // Inquiries
   inquiries: TradeInquiry[];
-  submitInquiry: (inquiryData: Omit<TradeInquiry, 'id' | 'createdAt' | 'status'>) => TradeInquiry;
-  updateInquiry: (inquiry: TradeInquiry) => void;
+  submitInquiry: (inquiryData: Omit<TradeInquiry, 'id' | 'createdAt' | 'status'>) => Promise<TradeInquiry>;
+  updateInquiry: (inquiry: TradeInquiry) => Promise<void>;
 
   // Settings & Logs
   settings: WebsiteSettings;
@@ -444,6 +444,14 @@ export const TradeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
           try { return typeof row.data_json === 'string' ? JSON.parse(row.data_json) : row.data_json || row; } catch { return row; }
         }).filter((item: RFQ) => Boolean(item && item.id));
         setRFQs(remoteRFQs);
+      }
+      const inquiriesResponse = await fetch(`${API_BASE}/admin/inquiries`, { headers: { Authorization: `Bearer ${payload.token}` }, signal: AbortSignal.timeout(12000) });
+      if (inquiriesResponse.ok) {
+        const inquiriesPayload = await inquiriesResponse.json();
+        const remoteInquiries = (inquiriesPayload.data || []).map((row: any) => {
+          try { return typeof row.data_json === 'string' ? JSON.parse(row.data_json) : row.data_json || row; } catch { return row; }
+        }).filter((item: TradeInquiry) => Boolean(item && item.id));
+        setInquiries(remoteInquiries);
       }
       if (typeof window !== 'undefined' && parseUrlRoute(window.location.pathname).page !== 'admin-dashboard') window.history.pushState({}, '', '/admin');
       return { success: true, message: 'Signed in successfully.' };
@@ -922,24 +930,28 @@ export const TradeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   };
 
   // Inquiries Engine
-  const submitInquiry = (inquiryData: Omit<TradeInquiry, 'id' | 'createdAt' | 'status'>): TradeInquiry => {
-    const newInquiry: TradeInquiry = {
-      ...inquiryData,
-      id: `inq-${Date.now()}`,
-      createdAt: new Date().toISOString(),
-      status: 'new',
-    };
-
-    TradeStorageService.saveInquiry(newInquiry);
-    setInquiries(TradeStorageService.getInquiries());
-    setAdminLogs(TradeStorageService.getLogs());
-    return newInquiry;
+  const submitInquiry = async (inquiryData: Omit<TradeInquiry, 'id' | 'createdAt' | 'status'>): Promise<TradeInquiry> => {
+    const response = await fetch(`${API_BASE}/inquiries`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(inquiryData), signal: AbortSignal.timeout(15000),
+    });
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok || !payload.data) throw new Error(payload.error || 'Inquiry could not be submitted. Please retry.');
+    const inquiry = payload.data as TradeInquiry;
+    setInquiries((current) => [inquiry, ...current.filter((item) => item.id !== inquiry.id)]);
+    return inquiry;
   };
 
-  const updateInquiry = (inquiry: TradeInquiry) => {
-    TradeStorageService.saveInquiry(inquiry);
-    setInquiries(TradeStorageService.getInquiries());
-    setAdminLogs(TradeStorageService.getLogs());
+  const updateInquiry = async (inquiry: TradeInquiry): Promise<void> => {
+    const token = getAdminToken();
+    if (!token) throw new Error('Your admin session has expired. Please sign in again.');
+    const response = await fetch(`${API_BASE}/admin/inquiries/${encodeURIComponent(inquiry.id)}`, {
+      method: 'PATCH', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify(inquiry), signal: AbortSignal.timeout(12000),
+    });
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(payload.error || 'Inquiry update failed.');
+    setInquiries((current) => current.map((item) => item.id === inquiry.id ? inquiry : item));
   };
 
   // Settings
