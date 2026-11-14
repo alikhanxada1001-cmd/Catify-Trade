@@ -46,8 +46,8 @@ export const Header: React.FC = () => {
     { label: 'Shop Catalog', page: 'shop' },
     { label: 'Wholesale B2B', page: 'wholesale' },
     { label: 'Import & Export', page: 'import-services' },
-    { label: 'Verified Suppliers', page: 'suppliers' },
-    { label: 'Track Shipment', page: 'track-order' },
+    { label: 'Supplier Directory', page: 'suppliers' },
+    { label: 'Order Tracking Info', page: 'track-order' },
   ];
 
   return (
