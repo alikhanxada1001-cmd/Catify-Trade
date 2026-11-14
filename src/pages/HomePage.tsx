@@ -69,7 +69,7 @@ export const HomePage: React.FC = () => {
               <span aria-hidden="true">·</span>
               <span>Direct Manufacturer Pricing</span>
               <span aria-hidden="true">·</span>
-              <span>160+ Nations</span>
+              <span>Global Sourcing</span>
             </div>
 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
@@ -77,7 +77,7 @@ export const HomePage: React.FC = () => {
             </h1>
 
             <p className="text-sm sm:text-base text-slate-300 leading-relaxed max-w-xl">
-              Catify Trade connects international importers, industrial buyers, and wholesale distributors directly to audited manufacturing plants with multi-currency settlement, escrow security, and complete customs clearance.
+              Catify Trade helps international buyers discover products, compare sourcing options, and coordinate wholesale inquiries, quality checks, and shipping requirements with clear communication.
             </p>
 
             {/* Quick Search & Category Bar */}
@@ -130,25 +130,25 @@ export const HomePage: React.FC = () => {
           </div>
         </div>
 
-        {/* Global Trade Trust Strip */}
-        <div className="border-t border-slate-800/80 bg-slate-900/70 backdrop-blur-xs">
+        {/* Trade service highlights — factual service capabilities, not unverified statistics */}
+        <div className="border-t border-slate-800/80 bg-slate-900/80 backdrop-blur-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-              <div>
-                <div className="text-xl sm:text-2xl font-extrabold text-white font-mono tabular-nums">160+</div>
-                <div className="text-xs text-slate-400 mt-0.5">Destinations &amp; Global Ports</div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-amber-400/10 text-amber-400 flex items-center justify-center shrink-0"><Layers className="w-5 h-5" /></div>
+                <div><div className="text-sm font-bold text-white">Wholesale Sourcing</div><div className="text-[11px] text-slate-400 mt-0.5">Bulk product inquiries</div></div>
               </div>
-              <div>
-                <div className="text-xl sm:text-2xl font-extrabold text-amber-400 font-mono tabular-nums">$48.5M+</div>
-                <div className="text-xs text-slate-400 mt-0.5">Commercial Cargo Dispatched</div>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-emerald-400/10 text-emerald-400 flex items-center justify-center shrink-0"><ShieldCheck className="w-5 h-5" /></div>
+                <div><div className="text-sm font-bold text-white">Quality Coordination</div><div className="text-[11px] text-slate-400 mt-0.5">Inspection requirements</div></div>
               </div>
-              <div>
-                <div className="text-xl sm:text-2xl font-extrabold text-white font-mono tabular-nums">450+</div>
-                <div className="text-xs text-slate-400 mt-0.5">Verified Industrial Mills &amp; Plants</div>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-sky-400/10 text-sky-400 flex items-center justify-center shrink-0"><Ship className="w-5 h-5" /></div>
+                <div><div className="text-sm font-bold text-white">Shipping Support</div><div className="text-[11px] text-slate-400 mt-0.5">Air and sea freight options</div></div>
               </div>
-              <div>
-                <div className="text-xl sm:text-2xl font-extrabold text-emerald-400 font-mono tabular-nums">99.4%</div>
-                <div className="text-xs text-slate-400 mt-0.5">On-Time Customs Clearance</div>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-violet-400/10 text-violet-400 flex items-center justify-center shrink-0"><FileSpreadsheet className="w-5 h-5" /></div>
+                <div><div className="text-sm font-bold text-white">Custom Quotations</div><div className="text-[11px] text-slate-400 mt-0.5">Request pricing and details</div></div>
               </div>
             </div>
           </div>
