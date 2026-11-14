@@ -97,7 +97,6 @@ export function getPageSeoMetadata({
       telephone: settings.phone,
       email: settings.email,
       contactType: 'customer service',
-      areaServed: 'Worldwide',
       availableLanguage: ['English', 'Urdu'],
     },
   };
@@ -389,12 +388,12 @@ export function getPageSeoMetadata({
 
     case 'import-services': {
       return {
-        title: 'Import Customs & Air/Ocean Freight | Catify Trade',
+        title: 'Import Planning & Documentation | Catify Trade',
         description: clampDescription(
-          'Seamless cross-border import clearance, HS tariff classification, cargo insurance, and port-to-door logistics managed by Catify Trade.'
+          'Share your product and destination details to discuss import documentation requirements and possible logistics options.'
         ),
         keywords:
-          'import customs clearance, freight forwarding, HS code tariff calculation, DDP shipping, Catify Trade import services',
+          'import documentation, customs broker questions, shipping enquiry, Catify Trade',
         robots: INDEX_ROBOTS,
         ogType: 'website',
         image: defaultImage,
@@ -402,10 +401,10 @@ export function getPageSeoMetadata({
         jsonLd: {
           '@context': 'https://schema.org',
           '@type': 'Service',
-          name: 'International Import Customs & Freight Logistics',
+          name: 'Import Documentation Information',
           provider: organizationSchema,
           areaServed: 'Worldwide',
-          serviceType: 'Import Customs Brokerage & Global Freight Forwarding',
+          serviceType: 'Import documentation and sourcing enquiry',
           url: canonicalUrl,
         },
       };
@@ -415,10 +414,10 @@ export function getPageSeoMetadata({
       return {
         title: 'Global Export Sourcing & Compliance | Catify Trade',
         description: clampDescription(
-          'Export certified goods from Pakistan and global hubs with Bill of Lading, Certificate of Origin, SGS inspection, and escrow protection.'
+          'Share your origin, destination and product details to discuss possible export documentation and shipping requirements.'
         ),
         keywords:
-          'global export compliance, Pakistan export services, Bill of Lading, SGS cargo inspection, FOB CIF export',
+          'export documentation enquiry, wholesale sourcing, shipping requirements',
         robots: INDEX_ROBOTS,
         ogType: 'website',
         image: defaultImage,
@@ -429,7 +428,7 @@ export function getPageSeoMetadata({
           name: 'International Export Compliance & Sourcing Desk',
           provider: organizationSchema,
           areaServed: 'Worldwide',
-          serviceType: 'Export Documentation & Container Logistics',
+          serviceType: 'Export documentation information',
           url: canonicalUrl,
         },
       };
@@ -439,7 +438,7 @@ export function getPageSeoMetadata({
       return {
         title: 'Request Bulk Trade Quotation (RFQ) | Catify Trade',
         description: clampDescription(
-          'Submit a custom RFQ for wholesale container pricing, OEM manufacturing, and Incoterm (FOB, CIF, DDP) freight quotes within 24 hours.'
+          'Submit product, quantity, destination and preferred trade terms. Final supplier availability and quotation details are confirmed after review.'
         ),
         keywords:
           'request trade quotation, B2B RFQ form, wholesale custom pricing, FOB CIF quote, Catify Trade',
@@ -461,7 +460,7 @@ export function getPageSeoMetadata({
       return {
         title: 'Track International Cargo & Orders | Catify Trade',
         description: clampDescription(
-          'Monitor live customs clearance, ocean Bill of Lading, air express, and Pakistan domestic courier shipment status in real time.'
+          'Order tracking details are available only after a confirmed order and valid tracking reference have been provided.'
         ),
         keywords: 'track international order, shipment status, customs clearance tracking, Catify Trade tracking',
         robots: INDEX_ROBOTS,
@@ -481,9 +480,9 @@ export function getPageSeoMetadata({
       return {
         title: 'About Catify Trade | Global Trade Platform',
         description: clampDescription(
-          'Learn how Catify Trade connects verified exporters and commercial buyers across 160+ countries with multi-currency settlement and escrow safety.'
+          'Learn about Catify Trade's product discovery catalogue and quotation request process.'
         ),
-        keywords: 'about Catify Trade, international import export company, global B2B marketplace, escrow trade',
+        keywords: 'about Catify Trade, product discovery, wholesale sourcing enquiry',
         robots: INDEX_ROBOTS,
         ogType: 'website',
         image: defaultImage,
@@ -546,9 +545,9 @@ export function getPageSeoMetadata({
       return {
         title: 'Import, Export & Wholesale FAQs | Catify Trade',
         description: clampDescription(
-          'Get clear answers on MOQs, retail ordering in Pakistan, SWIFT wire / L/C payments, HS customs duties, and ocean or air cargo delivery.'
+          'Get practical answers about sample catalogue pricing, wholesale enquiries, supplier checks and shipping estimates.'
         ),
-        keywords: 'Catify Trade FAQs, import export questions, customs duty guide, MOQ rules, escrow payment',
+        keywords: 'Catify Trade FAQs, sample MOQ, sourcing enquiry, shipping information',
         robots: INDEX_ROBOTS,
         ogType: 'article',
         image: defaultImage,
@@ -572,7 +571,7 @@ export function getPageSeoMetadata({
       return {
         title: 'International Shipping Policy | Catify Trade',
         description: clampDescription(
-          'Review ICC Incoterms 2020 ocean LCL/FCL freight, air cargo express timelines, ISPM-15 pallet packing, and Pakistan domestic courier terms.'
+          'Review shipping options, indicative freight estimates, customs responsibilities and the details to confirm before dispatch.'
         ),
         keywords: 'Catify Trade shipping policy, Incoterms 2020, ocean freight, air express, customs demurrage',
         robots: INDEX_ROBOTS,
@@ -592,7 +591,7 @@ export function getPageSeoMetadata({
       return {
         title: 'Commercial Return & Refund Policy | Catify Trade',
         description: clampDescription(
-          'Read Catify Trade inspection windows, marine cargo insurance guarantees, replacement terms, and wire refund procedures for non-conforming goods.'
+          'Read current order, cancellation and refund information. No online payments or purchases are processed through this website.'
         ),
         keywords: 'Catify Trade refund policy, cargo inspection period, commercial trade protection',
         robots: INDEX_ROBOTS,
@@ -678,9 +677,9 @@ export function getPageSeoMetadata({
     case 'cart':
     case 'checkout': {
       return {
-        title: 'Secure Trade Checkout & Shipping | Catify Trade',
+        title: 'Product Enquiry List | Catify Trade',
         description: clampDescription(
-          'Complete your retail or wholesale purchase with Pakistan Cash on Delivery, JazzCash/Raast, international card, or SWIFT bank wire.'
+          'Review selected sample products and request a quotation. This website does not process online payments or confirm live stock.'
         ),
         keywords: 'Catify Trade checkout, COD Pakistan, international trade payment',
         robots: NOINDEX_ROBOTS,
@@ -698,9 +697,9 @@ export function getPageSeoMetadata({
 
     case 'order-success': {
       return {
-        title: 'Order Confirmed & Invoice Ready | Catify Trade',
+        title: 'Order Enquiry Status | Catify Trade',
         description: clampDescription(
-          'Your Catify Trade purchase order is confirmed. Review your shipment tracking number, commercial invoice, and courier schedule.'
+          'Order status and tracking are available only after a confirmed order has been arranged separately.'
         ),
         keywords: 'Catify Trade order confirmation, commercial invoice',
         robots: NOINDEX_ROBOTS,
