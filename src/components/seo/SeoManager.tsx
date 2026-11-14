@@ -45,7 +45,7 @@ function clampDescription(text: string, minLen = 120, maxLen = 160): string {
     return `${clean.slice(0, maxLen - 3).trim()}...`;
   }
   if (clean.length < minLen) {
-    const pad = ' Trade globally with verified exporters & transparent pricing on Catify Trade.';
+    const pad = ' Explore sample product listings and request a wholesale quotation from Catify Trade.';
     const combined = `${clean}${pad}`;
     return combined.length > maxLen ? `${combined.slice(0, maxLen - 3).trim()}...` : combined;
   }
@@ -105,12 +105,12 @@ export function getPageSeoMetadata({
   switch (currentPage) {
     case 'home': {
       return {
-        title: 'Catify Trade | Global Import & Export Marketplace',
+        title: 'Catify Trade | Wholesale Product Discovery & Sourcing',
         description: clampDescription(
-          'Buy wholesale bulk stock or single retail products in Pakistan & worldwide with Catify Trade. Verified exporters, customs clearance & global delivery.'
+          'Explore sample product listings and request wholesale sourcing, product and shipping quotations from Catify Trade.'
         ),
         keywords:
-          'Catify Trade, import export marketplace, global wholesale B2B, buy single item Pakistan, international freight, verified exporters, COD Pakistan',
+          'Catify Trade, wholesale product discovery, apparel catalogue, sourcing enquiry, bulk product quotation',
         robots: INDEX_ROBOTS,
         ogType: 'website',
         image: defaultImage,
@@ -124,7 +124,7 @@ export function getPageSeoMetadata({
               name: 'Catify Trade',
               url: homeUrl,
               description:
-                'International Import & Export E-Commerce Marketplace for wholesale bulk sourcing and single-piece retail orders.',
+                'Product discovery and quotation request platform for wholesale and sourcing enquiries.',
               potentialAction: {
                 '@type': 'SearchAction',
                 target: `${resolveUrl('/shop', origin)}?q={search_term_string}`,
@@ -147,19 +147,19 @@ export function getPageSeoMetadata({
       const title = activeCategory
         ? truncateTitle(activeCategory.name, ' | Catify Trade')
         : currentPage === 'categories'
-        ? 'International Trade Categories | Catify Trade Shop'
-        : 'Global Trade Catalog & Retail Store | Catify Trade';
+        ? 'Product Categories | Catify Trade'
+        : 'Wholesale Product Catalogue | Catify Trade';
       const description = clampDescription(
         activeCategory
           ? `Shop ${activeCategory.name} for wholesale export or single-unit retail delivery across Pakistan and 160+ countries with customs support.`
-          : 'Browse industrial machinery, electronics, organic textiles, and Himalayan minerals. Order 1-piece retail in Pakistan or bulk wholesale worldwide.'
+          : 'Browse sample apparel and accessory listings. Product availability, final pricing and supplier details are confirmed after enquiry.'
       );
 
       return {
         title,
         description,
         keywords:
-          'Catify Trade catalog, buy 1 piece Pakistan, global wholesale products, industrial machinery export, organic cotton bulk, Himalayan pink salt',
+          'Catify Trade catalogue, apparel products, wholesale product enquiry, sourcing quotation',
         robots: INDEX_ROBOTS,
         ogType: 'website',
         image: activeCategory ? resolveUrl(activeCategory.image, origin) : defaultImage,
@@ -205,7 +205,7 @@ export function getPageSeoMetadata({
         return {
           title: 'Commercial Export Product Details | Catify Trade',
           description: clampDescription(
-            'Inspect verified product specifications, HS customs codes, wholesale tiers, and international shipping options on Catify Trade.'
+            'Explore sample product details, indicative pricing and wholesale enquiry options on Catify Trade.'
           ),
           keywords: 'Catify Trade product, HS code export, bulk wholesale pricing',
           robots: INDEX_ROBOTS,
@@ -288,12 +288,12 @@ export function getPageSeoMetadata({
 
     case 'wholesale': {
       return {
-        title: 'Wholesale B2B Hub & Bulk Export | Catify Trade',
+        title: 'Wholesale Product Enquiries | Catify Trade',
         description: clampDescription(
-          'Source container-load wholesale commodities, factory-direct MOQ tier discounts, and instant FOB/CIF/DDP quotes from audited global suppliers.'
+          'Explore sample bulk pricing and send quantity, customization and destination details for a wholesale quotation.'
         ),
         keywords:
-          'B2B wholesale hub, bulk export Pakistan, factory direct MOQ pricing, FOB CIF container cargo, Catify Trade wholesale',
+          'Catify Trade wholesale enquiry, sample MOQ pricing, bulk product quotation',
         robots: INDEX_ROBOTS,
         ogType: 'website',
         image: defaultImage,
@@ -305,7 +305,7 @@ export function getPageSeoMetadata({
               '@type': 'CollectionPage',
               name: 'Catify Trade Wholesale & B2B Procurement Hub',
               description:
-                'Factory-direct wholesale commodities, tiered bulk pricing, and global container trade logistics.',
+                'Sample product listings and indicative tier pricing for wholesale enquiries.',
               url: canonicalUrl,
             },
             {
@@ -328,11 +328,11 @@ export function getPageSeoMetadata({
           : undefined;
       const title = supplier
         ? truncateTitle(supplier.name, ' | Verified Supplier')
-        : 'Verified Global Exporters & Mills | Catify Trade';
+        : 'Supplier Directory | Catify Trade';
       const description = clampDescription(
         supplier
           ? `${supplier.name} in ${supplier.city}, ${supplier.country}. Certifications: ${supplier.certifications.join(', ')}. ${supplier.about}`
-          : 'Connect directly with ISO, GOTS, FDA, and CE audited manufacturers across Pakistan, Germany, China, and the UAE via Catify Trade.'
+          : 'Supplier profiles are added after identity and business credentials have been checked. No supplier profiles are currently published.'
       );
 
       return {
@@ -340,7 +340,7 @@ export function getPageSeoMetadata({
         description,
         keywords: supplier
           ? `${supplier.name}, ${supplier.country} exporter, ${supplier.certifications.join(', ')}, Catify Trade supplier`
-          : 'verified global suppliers, ISO 9001 factories, Pakistan textile exporters, German CNC suppliers, Catify Trade',
+          : 'supplier directory, supplier verification, Catify Trade sourcing',
         robots: INDEX_ROBOTS,
         ogType: 'website',
         image: defaultImage,
@@ -368,7 +368,7 @@ export function getPageSeoMetadata({
                 }
               : {
                   '@type': 'CollectionPage',
-                  name: 'Verified International Suppliers Directory',
+                  name: 'Supplier Directory',
                   description,
                   url: canonicalUrl,
                 },
