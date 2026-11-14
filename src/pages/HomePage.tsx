@@ -160,7 +160,7 @@ export const HomePage: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6 sm:mb-8">
           <div>
             <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Key Trade Categories</h2>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1">Specialized industrial commodities, manufactured hardware &amp; raw materials</p>
+            <p className="text-xs sm:text-sm text-slate-500 mt-1">Sample apparel and accessory categories available for product enquiries</p>
           </div>
           <button
             onClick={() => navigateTo('shop')}
@@ -214,7 +214,7 @@ export const HomePage: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6 sm:mb-8">
           <div>
             <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Featured Trade Catalog</h2>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1">High-demand commercial inventory ready for worldwide ocean container &amp; air dispatch</p>
+            <p className="text-xs sm:text-sm text-slate-500 mt-1">Sample listings for product discovery. Confirm availability, final pricing and shipping before ordering.</p>
           </div>
           <button
             onClick={() => navigateTo('shop')}
@@ -243,7 +243,7 @@ export const HomePage: React.FC = () => {
               </div>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-white">Wholesale &amp; Container Bulk Purchasing</h2>
               <p className="text-xs sm:text-sm text-slate-400 max-w-xl">
-                Purchase directly in pallet, LCL, or full 20ft/40ft container loads with steep quantity-based discounts and guaranteed factory lead times.
+                Share your target quantity and destination to request wholesale pricing. Supplier capacity, lead times and final terms are confirmed case by case.
               </p>
             </div>
             <button
@@ -266,9 +266,9 @@ export const HomePage: React.FC = () => {
       {/* 5. Import & Export Services Solutions */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-12 space-y-2">
-          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">Full-Spectrum Trade Services</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">Sourcing &amp; Trade Support</h2>
           <p className="text-xs sm:text-sm text-slate-500">
-            Catify Trade manages the end-to-end international commercial pipeline, from factory inspection to customs release.
+            We help buyers organize product requirements and request information about sourcing, quality checks and shipping options.
           </p>
         </div>
 
@@ -277,15 +277,15 @@ export const HomePage: React.FC = () => {
             <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-900 flex items-center justify-center font-bold">
               <Ship className="w-6 h-6 text-blue-900" />
             </div>
-            <h3 className="text-base font-bold text-slate-900">Customs Clearance &amp; Brokerage</h3>
+            <h3 className="text-base font-bold text-slate-900">Import Documentation Guidance</h3>
             <p className="text-xs text-slate-600 leading-relaxed">
-              Automated HS code classification, duty optimization, tariff calculation, and certified customs broker representation at all major seaports and international border gateways.
+              We can help identify the product information and documents buyers may need to discuss with a licensed customs broker. We do not act as a customs authority or broker.
             </p>
             <button
               onClick={() => navigateTo('import-services')}
               className="text-xs font-semibold text-blue-900 hover:text-blue-950 flex items-center gap-1"
             >
-              <span>Learn about Import Clearance</span>
+              <span>Explore Import Guidance</span>
               <ChevronRight className="w-3 h-3" />
             </button>
           </div>
@@ -294,15 +294,15 @@ export const HomePage: React.FC = () => {
             <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold">
               <Plane className="w-6 h-6 text-amber-600" />
             </div>
-            <h3 className="text-base font-bold text-slate-900">Air Cargo &amp; Ocean Freight</h3>
+            <h3 className="text-base font-bold text-slate-900">Shipping Options</h3>
             <p className="text-xs text-slate-600 leading-relaxed">
-              Consolidated LCL (Less-than-Container Load) and dedicated FCL (Full Container Load) slots booked directly with Tier-1 ocean carriers and commercial cargo airlines.
+              Depending on route and volume, courier, air or sea freight may be suitable. Carrier availability, costs and transit estimates require confirmation.
             </p>
             <button
               onClick={() => navigateTo('export-services')}
               className="text-xs font-semibold text-blue-900 hover:text-blue-950 flex items-center gap-1"
             >
-              <span>Explore Freight Booking</span>
+              <span>Explore Shipping Information</span>
               <ChevronRight className="w-3 h-3" />
             </button>
           </div>
@@ -330,14 +330,14 @@ export const HomePage: React.FC = () => {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6 sm:mb-8">
           <div>
-            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Verified Manufacturing Partners</h2>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1">Directly audited industrial plants across Europe, Asia, and the Middle East</p>
+            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Supplier Onboarding</h2>
+            <p className="text-xs sm:text-sm text-slate-500 mt-1">Supplier profiles will appear here after identity and credentials have been checked.</p>
           </div>
           <button
             onClick={() => navigateTo('suppliers')}
             className="text-xs font-semibold text-blue-900 hover:text-blue-950 flex items-center gap-1 group shrink-0 self-start sm:self-auto"
           >
-            <span>View All Suppliers</span>
+            <span>Supplier Directory</span>
             <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
           </button>
         </div>
