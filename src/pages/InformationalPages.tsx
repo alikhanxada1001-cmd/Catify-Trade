@@ -355,11 +355,11 @@ export const TermsPrivacyPage: React.FC<{ type: 'terms' | 'privacy' }> = ({ type
         </h1>
         <p>
           {type === 'terms'
-            ? 'These terms govern all commercial transactions, requests for quotation, and proforma orders executed through the Catify Trade international trading platform.'
-            : 'Catify Trade is committed to safeguarding corporate identity and consignee data in compliance with international privacy standards including GDPR and cross-border trade transmission laws.'}
+            ? 'This website provides sample product listings and a quotation-request workflow. A listing or submitted enquiry is not a confirmed order, binding offer, supplier commitment or shipping booking. Final specifications, supplier identity, availability, price, payment and delivery terms must be agreed in a separate written contract.'
+            : 'Information submitted through contact, import/export and quotation forms is stored in the Catify Trade enquiry database so the team can review and respond. Do not submit passwords, full payment-card details, identity documents or other sensitive information through these forms.'}
         </p>
         <p>
-          For legal inquiries, contact our compliance desk at <strong>tardecatify@gmail.com</strong> or WhatsApp <strong>+92 324 7615133</strong>.
+          For privacy or terms questions, contact us at <strong>tardecatify@gmail.com</strong> or WhatsApp <strong>+92 324 7615133</strong>.
         </p>
       </div>
     </div>
