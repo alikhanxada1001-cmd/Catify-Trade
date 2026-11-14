@@ -82,7 +82,7 @@ export const AdminLoginPage: React.FC = () => {
                 Catify Trade Console
               </h1>
               <p className="text-xs text-slate-400 mt-1">
-                'Sign in with your administrator email and password to access the dashboard.'
+                Sign in with your administrator email and password to access the dashboard.
               </p>
             </div>
           </div>
