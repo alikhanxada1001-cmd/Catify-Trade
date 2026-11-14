@@ -173,7 +173,7 @@ export const AdminLoginPage: React.FC = () => {
 
             <button
               type="submit"
-              disabled={lockoutSeconds > 0}
+              disabled={isSubmitting}
               className="w-full py-3 px-4 bg-gradient-to-r from-blue-950 to-blue-900 hover:from-blue-900 hover:to-blue-800 disabled:from-slate-400 disabled:to-slate-400 text-white text-xs sm:text-sm font-bold rounded-xl shadow-sm transition-all flex items-center justify-center gap-2"
             >
               <LogIn className="w-4 h-4 text-amber-400" />
