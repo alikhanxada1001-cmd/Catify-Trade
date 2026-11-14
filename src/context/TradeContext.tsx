@@ -325,6 +325,34 @@ export const TradeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     readAdminSession() && initialRoute.page === 'admin-dashboard' ? 'admin' : 'customer'
   );
 
+  // Sync the public catalogue with the Catify-Trade Cloudflare API.
+  useEffect(() => {
+    let active = true;
+    const apiBase = 'https://catifytrade-api.catifytrade.workers.dev/api';
+    const loadCatalogue = async () => {
+      try {
+        const [productsResponse, categoriesResponse] = await Promise.all([
+          fetch(`${apiBase}/products`),
+          fetch(`${apiBase}/categories`),
+        ]);
+        if (!productsResponse.ok || !categoriesResponse.ok) throw new Error('Catalogue API unavailable');
+        const [productsPayload, categoriesPayload] = await Promise.all([productsResponse.json(), categoriesResponse.json()]);
+        const remoteProducts = (productsPayload.data || []).map((row: any) => {
+          try { return typeof row.data_json === 'string' ? JSON.parse(row.data_json) : row.data_json; } catch { return null; }
+        }).filter((product: Product | null): product is Product => Boolean(product && product.id));
+        const remoteCategories = (categoriesPayload.data || []).map((row: any) => ({
+          id: row.id, name: row.name, slug: row.slug, description: row.description || '',
+          image: row.image_url || '', iconName: 'Package', productCount: 0, isTradeSpecialty: false,
+        } as Category));
+        if (!active) return;
+        if (remoteProducts.length) { setProducts(remoteProducts); localStorage.setItem('catify_products', JSON.stringify(remoteProducts)); }
+        if (remoteCategories.length) { setCategories(remoteCategories); localStorage.setItem('catify_categories', JSON.stringify(remoteCategories)); }
+      } catch (error) { console.warn('Catify-Trade API unavailable; keeping local catalogue.', error); }
+    };
+    void loadCatalogue();
+    return () => { active = false; };
+  }, []);
+
   // Sync browser back/forward URL changes across all routes
   useEffect(() => {
     if (typeof window === 'undefined') return;
