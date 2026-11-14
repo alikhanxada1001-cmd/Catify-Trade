@@ -20,7 +20,7 @@ function parseData(row) { try { return typeof row.data_json === "string" ? JSON.
 export default {
   async fetch(request, env) {
     const origin = request.headers.get("Origin") || "";
-    const allowed = origin === "https://catify-trade-alikhanxada1001-2695.vercel.app" ||
+    const allowed = origin === "https://catify-trade.vercel.app" || origin === "https://catify-trade-alikhanxada1001-2695.vercel.app" ||
       /^https:\/\/catify-trade(?:-[a-z0-9-]+)?-alikhanxada1001-2695\.vercel\.app$/.test(origin) ||
       /^http:\/\/localhost:\d+$/.test(origin);
     const cors = {
