@@ -72,6 +72,7 @@ export interface TradeContextType {
   suppliers: Supplier[];
   saveProduct: (product: Product) => Promise<void>;
   deleteProduct: (id: string) => Promise<void>;
+  uploadProductImage: (file: File) => Promise<string>;
 
   // Cart
   cart: CartItem[];
@@ -599,6 +600,22 @@ export const TradeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     setAdminLogs(TradeStorageService.getLogs());
   };
 
+  const uploadProductImage = async (file: File): Promise<string> => {
+    const token = getAdminToken();
+    if (!token) throw new Error('Your admin session has expired. Please sign in again.');
+    if (!file.type.startsWith('image/')) throw new Error('Please choose an image file.');
+    if (file.size > 8 * 1024 * 1024) throw new Error('Image must be 8 MB or smaller.');
+    const form = new FormData();
+    form.append('file', file);
+    const response = await fetch(`${API_BASE}/assets`, {
+      method: 'POST', headers: { Authorization: `Bearer ${token}` }, body: form,
+      signal: AbortSignal.timeout(30000),
+    });
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok || !payload.key) throw new Error(payload.error || 'Image upload failed. Please retry.');
+    return `https://catifytrade-api.catifytrade.workers.dev${payload.url}`;
+  };
+
   const deleteProduct = async (id: string): Promise<void> => {
     const token = getAdminToken();
     if (!token) throw new Error('Your admin session has expired. Please sign in again.');
@@ -975,6 +992,7 @@ export const TradeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         suppliers,
         saveProduct,
         deleteProduct,
+        uploadProductImage,
 
         cart,
         addToCart,
