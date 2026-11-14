@@ -349,7 +349,10 @@ export const TradeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         const remoteCategories = (categoriesPayload.data || []).map((row: any) => ({
           ...row, id: row.id, name: row.name, slug: row.slug, description: row.description || '',
           image: row.image || row.image_url || '', iconName: row.iconName || 'Package',
-          productCount: 0, isTradeSpecialty: Boolean(row.isTradeSpecialty),
+          productCount: (productsPayload.data || []).filter((productRow: any) => {
+            try { const product = typeof productRow.data_json === 'string' ? JSON.parse(productRow.data_json) : productRow; return product.category === row.name; } catch { return false; }
+          }).length,
+          isTradeSpecialty: Boolean(row.isTradeSpecialty),
         } as Category));
         if (remoteProducts.length) {
           setProducts(remoteProducts);
