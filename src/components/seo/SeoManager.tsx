@@ -434,12 +434,12 @@ export function getPageSeoMetadata({
 
     case 'track-order': {
       return {
-        title: 'Track International Cargo & Orders | Catify Trade',
+        title: 'Order Tracking Information | Catify Trade',
         description: clampDescription(
           'Order tracking details are available only after a confirmed order and valid tracking reference have been provided.'
         ),
-        keywords: 'track international order, shipment status, customs clearance tracking, Catify Trade tracking',
-        robots: INDEX_ROBOTS,
+        keywords: 'Catify Trade order tracking information, shipment reference',
+        robots: NOINDEX_ROBOTS,
         ogType: 'website',
         image: defaultImage,
         canonicalPath,
@@ -642,7 +642,7 @@ export function getPageSeoMetadata({
         description: clampDescription(
           'Review selected sample products and request a quotation. This website does not process online payments or confirm live stock.'
         ),
-        keywords: 'Catify Trade checkout, COD Pakistan, international trade payment',
+        keywords: 'Catify Trade product enquiry list',
         robots: NOINDEX_ROBOTS,
         ogType: 'website',
         image: defaultImage,
@@ -650,7 +650,7 @@ export function getPageSeoMetadata({
         jsonLd: {
           '@context': 'https://schema.org',
           '@type': 'WebPage',
-          name: 'Secure Checkout | Catify Trade',
+          name: 'Product Enquiry List | Catify Trade',
           url: canonicalUrl,
         },
       };
@@ -720,11 +720,11 @@ export function getPageSeoMetadata({
 
     default: {
       return {
-        title: 'Catify Trade | Global Import & Export Marketplace',
+        title: 'Catify Trade | Wholesale Product Discovery & Sourcing',
         description: clampDescription(
-          'Buy wholesale bulk stock or single retail products in Pakistan & worldwide with Catify Trade. Verified exporters, customs clearance & global delivery.'
+          'Explore sample product listings and request wholesale sourcing, product and shipping quotations from Catify Trade.'
         ),
-        keywords: 'Catify Trade, global import export marketplace, wholesale B2B',
+        keywords: 'Catify Trade, wholesale product discovery, sourcing enquiry, product catalogue',
         robots: INDEX_ROBOTS,
         ogType: 'website',
         image: defaultImage,
