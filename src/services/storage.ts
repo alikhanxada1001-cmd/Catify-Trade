@@ -83,6 +83,7 @@ export class TradeStorageService {
       safeSet(STORAGE_KEYS.PRODUCTS, INITIAL_PRODUCTS);
       safeSet(STORAGE_KEYS.CATEGORIES, INITIAL_CATEGORIES);
       safeSet(STORAGE_KEYS.CATALOG_VERSION, 'apparel-demo-v2');
+      safeSet(STORAGE_KEYS.SETTINGS, INITIAL_SETTINGS);
       // Remove legacy fabricated local demo records; real inquiries now live in Cloudflare D1.
       try {
         [STORAGE_KEYS.SUPPLIERS, STORAGE_KEYS.ORDERS, STORAGE_KEYS.RFQS, STORAGE_KEYS.INQUIRIES, STORAGE_KEYS.COUPONS, STORAGE_KEYS.REVIEWS, STORAGE_KEYS.LOGS].forEach((key) => localStorage.removeItem(key));
