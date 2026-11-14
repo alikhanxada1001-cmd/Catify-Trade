@@ -516,7 +516,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, isWholesaleCa
         className="relative aspect-4/3 overflow-hidden bg-slate-100 cursor-pointer"
       >
         <img
-          src={product.images[0]}
+          src={product.images?.[0] || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=900'}
           alt={product.title}
           referrerPolicy="no-referrer"
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
