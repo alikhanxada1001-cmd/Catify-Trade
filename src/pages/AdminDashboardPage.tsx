@@ -18,6 +18,7 @@ import {
   X,
   Truck,
   RotateCcw,
+  Download,
   Tag,
   Building2,
   ArrowRight,
@@ -69,6 +70,7 @@ export const AdminDashboardPage: React.FC = () => {
   } = useTrade();
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isResetConfirmOpen, setIsResetConfirmOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<
     'overview' | 'products' | 'media' | 'orders' | 'rfqs' | 'inquiries' | 'currencies' | 'settings' | 'profile' | 'logs'
   >('overview');
@@ -294,18 +296,6 @@ export const AdminDashboardPage: React.FC = () => {
             className="min-h-11 px-3 sm:px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white text-xs sm:text-sm font-semibold rounded-xl border border-slate-700 transition-colors"
           >
             ← View Storefront
-          </button>
-          <button
-            onClick={() => {
-              if (window.confirm('Reset catalog, orders, and RFQs to default test dataset?')) {
-                resetAllData();
-              }
-            }}
-            className="min-h-11 px-3 sm:px-4 py-2 bg-rose-950/60 hover:bg-rose-900 text-rose-300 text-xs sm:text-sm font-semibold rounded-xl border border-rose-800/50 transition-colors flex items-center justify-center gap-1.5"
-            title="Reset to initial data"
-          >
-            <RotateCcw className="w-3.5 h-3.5 shrink-0" />
-            <span>Reset Data</span>
           </button>
           <button
             onClick={logoutAdmin}
@@ -809,6 +799,75 @@ export const AdminDashboardPage: React.FC = () => {
               <UserCog className="h-4 w-4" /> {profileSaving ? 'Saving Profile…' : 'Save Profile Changes'}
             </button>
           </form>
+          <section className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-7 space-y-4">
+            <div>
+              <h3 className="text-base font-extrabold text-slate-900">Data Backup &amp; Reset</h3>
+              <p className="mt-1 text-sm text-slate-500">Download a copy of your current website data before making major changes.</p>
+            </div>
+            <div className="rounded-xl border border-blue-200 bg-blue-50 p-4">
+              <h4 className="text-sm font-bold text-blue-950">Create Data Backup</h4>
+              <p className="mt-1 text-xs leading-5 text-blue-900">Download products, categories, suppliers, countries, currencies, orders, RFQs, inquiries, coupons, website settings, and activity logs as a JSON backup file.</p>
+              <button
+                type="button"
+                onClick={() => {
+                  const backup = {
+                    application: 'Catify Trade',
+                    backupVersion: 1,
+                    createdAt: new Date().toISOString(),
+                    data: { products, categories, suppliers, countries, currencies, orders, rfqs, inquiries, coupons, settings, adminLogs },
+                  };
+                  const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+                  const url = URL.createObjectURL(blob);
+                  const link = document.createElement('a');
+                  link.href = url;
+                  link.download = 'catify-trade-backup-' + new Date().toISOString().slice(0, 10) + '.json';
+                  document.body.appendChild(link);
+                  link.click();
+                  link.remove();
+                  URL.revokeObjectURL(url);
+                }}
+                className="mt-3 inline-flex min-h-10 items-center justify-center gap-2 rounded-xl bg-blue-950 px-4 py-2.5 text-sm font-bold text-white hover:bg-blue-900"
+              >
+                <Download className="h-4 w-4" /> Download Data Backup
+              </button>
+            </div>
+            <div className="rounded-xl border border-rose-200 bg-rose-50 p-4">
+              <h4 className="text-sm font-bold text-rose-900">Reset Website Data</h4>
+              <p className="mt-1 text-xs leading-5 text-rose-800">This restores the default demo dataset. Your current catalog, orders, RFQs, inquiries, coupons, settings, and activity logs may be replaced. Download a backup first if you need to keep a copy.</p>
+              <button
+                type="button"
+                onClick={() => setIsResetConfirmOpen(true)}
+                className="mt-3 inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-rose-300 bg-white px-4 py-2.5 text-sm font-bold text-rose-800 hover:bg-rose-100"
+              >
+                <RotateCcw className="h-4 w-4" /> Reset Data
+              </button>
+            </div>
+          </section>
+          {isResetConfirmOpen && (
+            <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/70 p-4" role="presentation">
+              <section role="alertdialog" aria-modal="true" aria-labelledby="reset-data-title" aria-describedby="reset-data-description" className="w-full max-w-lg rounded-2xl bg-white p-5 shadow-2xl sm:p-7">
+                <div className="flex items-start gap-3">
+                  <div className="rounded-full bg-rose-100 p-3 text-rose-700"><ShieldAlert className="h-6 w-6" /></div>
+                  <div>
+                    <h3 id="reset-data-title" className="text-lg font-extrabold text-slate-950">Confirm Data Reset</h3>
+                    <p id="reset-data-description" className="mt-2 text-sm leading-6 text-slate-600">Are you sure you want to reset the website data? This action restores the default demo dataset and replaces the current data for:</p>
+                  </div>
+                </div>
+                <ul className="my-4 list-disc space-y-1 pl-12 text-sm text-slate-700">
+                  <li>Products, categories, suppliers and countries</li>
+                  <li>Currencies and exchange rates</li>
+                  <li>Orders, RFQs and customer inquiries</li>
+                  <li>Coupons, website settings and activity logs</li>
+                  <li>Cart and wishlist data on this browser</li>
+                </ul>
+                <p className="rounded-lg bg-amber-50 p-3 text-xs leading-5 text-amber-900">This action cannot be undone from this screen. Download a backup before continuing if you may need your current data.</p>
+                <div className="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+                  <button type="button" onClick={() => setIsResetConfirmOpen(false)} className="min-h-11 rounded-xl border border-slate-300 px-5 py-2.5 text-sm font-bold text-slate-700 hover:bg-slate-50">No, Cancel</button>
+                  <button type="button" onClick={() => { resetAllData(); setIsResetConfirmOpen(false); }} className="min-h-11 rounded-xl bg-rose-700 px-5 py-2.5 text-sm font-bold text-white hover:bg-rose-800">Yes, Reset Data</button>
+                </div>
+              </section>
+            </div>
+          )}
         </section>
       )}
 
