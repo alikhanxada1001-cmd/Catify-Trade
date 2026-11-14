@@ -73,6 +73,8 @@ export interface TradeContextType {
   saveProduct: (product: Product) => Promise<void>;
   deleteProduct: (id: string) => Promise<void>;
   uploadProductImage: (file: File) => Promise<string>;
+  listMediaAssets: () => Promise<Array<{ key: string; size: number; uploaded: string | null; url: string }>>;
+  deleteMediaAsset: (key: string) => Promise<void>;
 
   // Cart
   cart: CartItem[];
@@ -627,6 +629,27 @@ export const TradeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     return `https://catifytrade-api.catifytrade.workers.dev${payload.url}`;
   };
 
+  const listMediaAssets = async (): Promise<Array<{ key: string; size: number; uploaded: string | null; url: string }>> => {
+    const token = getAdminToken();
+    if (!token) throw new Error('Your admin session has expired. Please sign in again.');
+    const response = await fetch(`${API_BASE}/admin/assets`, {
+      headers: { Authorization: `Bearer ${token}` }, signal: AbortSignal.timeout(15000),
+    });
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(payload.error || 'Media library could not be loaded.');
+    return Array.isArray(payload.data) ? payload.data : [];
+  };
+
+  const deleteMediaAsset = async (key: string): Promise<void> => {
+    const token = getAdminToken();
+    if (!token) throw new Error('Your admin session has expired. Please sign in again.');
+    const response = await fetch(`${API_BASE}/admin/assets/${encodeURIComponent(key)}`, {
+      method: 'DELETE', headers: { Authorization: `Bearer ${token}` }, signal: AbortSignal.timeout(12000),
+    });
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(payload.error || 'Image could not be deleted.');
+  };
+
   const deleteProduct = async (id: string): Promise<void> => {
     const token = getAdminToken();
     if (!token) throw new Error('Your admin session has expired. Please sign in again.');
@@ -1008,6 +1031,8 @@ export const TradeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         saveProduct,
         deleteProduct,
         uploadProductImage,
+    listMediaAssets,
+    deleteMediaAsset,
 
         cart,
         addToCart,
