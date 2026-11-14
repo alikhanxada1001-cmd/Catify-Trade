@@ -25,19 +25,26 @@ export const SuppliersPage: React.FC = () => {
         <div className="max-w-2xl space-y-3">
           <div className="flex items-center gap-2 text-xs font-semibold text-amber-400 uppercase tracking-wider">
             <ShieldCheck className="w-4 h-4" />
-            <span>Audited &amp; Certified Global Manufacturers</span>
+            <span>Supplier Verification</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
-            Verified Supplier Directory
+            Supplier Directory
           </h1>
           <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-            Every manufacturing facility in our network has undergone on-site commercial audits, ISO certification verification, and export track record validation.
+            Supplier profiles are published only after identity, business details and any claimed certifications have been checked. No supplier profiles are currently published.
           </p>
         </div>
       </div>
 
       {/* Suppliers Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {suppliers.length === 0 ? (
+        <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-14 text-center">
+          <Building2 className="mx-auto h-10 w-10 text-slate-400" />
+          <h2 className="mt-4 text-lg font-bold text-slate-900">Supplier profiles are being prepared</h2>
+          <p className="mx-auto mt-2 max-w-lg text-sm text-slate-500">We do not list unverified manufacturers or invented certifications. Send your product and destination requirements and supplier options can be discussed after review.</p>
+          <button onClick={() => navigateTo('request-quote')} className="mt-5 rounded-xl bg-blue-950 px-5 py-2.5 text-xs font-bold text-white">Request sourcing help</button>
+        </div>
+      ) : <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {suppliers.map((supplier) => (
           <div
             key={supplier.id}
@@ -107,7 +114,7 @@ export const SuppliersPage: React.FC = () => {
             </div>
           </div>
         ))}
-      </div>
+      </div>}
     </div>
   );
 };
@@ -140,7 +147,7 @@ export const SupplierDetailPage: React.FC = () => {
               <span>{supplier.city}, {supplier.country}</span>
               <span aria-hidden="true">·</span>
               <span className="text-emerald-700 font-bold flex items-center gap-1">
-                <CheckCircle className="w-3.5 h-3.5" /> Verified Manufacturer
+                <CheckCircle className="w-3.5 h-3.5" /> Verification status to be confirmed
               </span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900">{supplier.name}</h1>
@@ -152,7 +159,7 @@ export const SupplierDetailPage: React.FC = () => {
             className="px-6 py-3 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 text-xs font-bold rounded-xl shadow-xs transition-all flex items-center gap-1.5 self-start"
           >
             <FileSpreadsheet className="w-4 h-4" />
-            <span>Request Factory Direct Quotation</span>
+            <span>Request Sourcing Information</span>
           </button>
         </div>
 
