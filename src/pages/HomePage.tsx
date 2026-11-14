@@ -65,9 +65,9 @@ export const HomePage: React.FC = () => {
           <div className="max-w-2xl space-y-5 sm:space-y-6">
             {/* Subtle Text Kicker (No Pill Enclosure) */}
             <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] sm:text-xs font-semibold text-amber-400 uppercase tracking-widest">
-              <span>Verified Global Marketplace</span>
+              <span>Global Trade & Sourcing</span>
               <span aria-hidden="true">·</span>
-              <span>Direct Manufacturer Pricing</span>
+              <span>Wholesale Product Discovery</span>
               <span aria-hidden="true">·</span>
               <span>Global Sourcing</span>
             </div>
