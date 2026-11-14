@@ -81,6 +81,18 @@ export const AdminDashboardPage: React.FC = () => {
   const [mediaLoading, setMediaLoading] = useState(false);
   const [mediaError, setMediaError] = useState('');
   const [mediaNotice, setMediaNotice] = useState('');
+  useEffect(() => {
+    if (activeTab !== 'media') return;
+    let mounted = true;
+    setMediaLoading(true);
+    setMediaError('');
+    listMediaAssets()
+      .then((items) => { if (mounted) setMediaItems(items); })
+      .catch((error) => { if (mounted) setMediaError(error instanceof Error ? error.message : 'Could not load media.'); })
+      .finally(() => { if (mounted) setMediaLoading(false); });
+    return () => { mounted = false; };
+  }, [activeTab]);
+
 
   const [rfqActionError, setRfqActionError] = useState('');
 
