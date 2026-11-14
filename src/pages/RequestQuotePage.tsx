@@ -15,10 +15,10 @@ import {
 import { Incoterm } from '../types';
 
 export const RequestQuotePage: React.FC = () => {
-  const { countries, currentCountry, submitRFQ, settings, navigateTo } = useTrade();
+  const { countries, categories, currentCountry, submitRFQ, settings, navigateTo } = useTrade();
 
   const [productTitle, setProductTitle] = useState('');
-  const [category, setCategory] = useState('Industrial Machinery & Precision Tools');
+  const [category, setCategory] = useState('Jackets & Outerwear');
   const [quantity, setQuantity] = useState<number>(200);
   const [targetPriceUSD, setTargetPriceUSD] = useState<number>(45);
   const [destinationCountry, setDestinationCountry] = useState(currentCountry.name);
@@ -183,12 +183,8 @@ export const RequestQuotePage: React.FC = () => {
                     onChange={(e) => setCategory(e.target.value)}
                     className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900 bg-white"
                   >
-                    <option value="Industrial Machinery & Precision Tools">Industrial Machinery &amp; Precision Tools</option>
-                    <option value="Electronics & Smart IoT Systems">Electronics &amp; Smart IoT Systems</option>
-                    <option value="Textiles, Garments & Raw Cotton">Textiles, Garments &amp; Raw Cotton</option>
-                    <option value="Specialty Minerals & Commodities">Specialty Minerals &amp; Commodities</option>
-                    <option value="Maritime & Logistics Equipment">Maritime &amp; Logistics Equipment</option>
-                    <option value="Custom OEM Manufacturing">Custom OEM Manufacturing</option>
+                    {categories.map((item) => <option key={item.id} value={item.name}>{item.name}</option>)}
+                    <option value="Other / Custom Sourcing">Other / Custom Sourcing</option>
                   </select>
                 </div>
               </div>
