@@ -456,7 +456,7 @@ export function getPageSeoMetadata({
       return {
         title: 'About Catify Trade | Global Trade Platform',
         description: clampDescription(
-          'Learn about Catify Trade's product discovery catalogue and quotation request process.'
+          "Learn about Catify Trade's product discovery catalogue and quotation request process."
         ),
         keywords: 'about Catify Trade, product discovery, wholesale sourcing enquiry',
         robots: INDEX_ROBOTS,
