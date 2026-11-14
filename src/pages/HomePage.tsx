@@ -53,7 +53,7 @@ export const HomePage: React.FC = () => {
       <section className="relative bg-slate-950 text-white overflow-hidden border-b border-slate-800">
         <div className="absolute inset-0 z-0 opacity-40">
           <img
-            src="/src/assets/images/hero_global_trade_port_1794500846526.jpg"
+            src="https://images.unsplash.com/photo-1494412519320-aa613dfb7738?w=2000"
             alt="International Ocean Port Logistics"
             referrerPolicy="no-referrer"
             className="w-full h-full object-cover object-center"
@@ -73,7 +73,7 @@ export const HomePage: React.FC = () => {
             </div>
 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
-              Empowering Global Commerce with Verified <span className="text-gold-gradient">Import &amp; Export</span> Sourcing
+              Discover Products and Coordinate <span className="text-gold-gradient">Wholesale Trade</span> with Confidence
             </h1>
 
             <p className="text-sm sm:text-base text-slate-300 leading-relaxed max-w-xl">
