@@ -88,7 +88,7 @@ export const HomePage: React.FC = () => {
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search products, HS codes, or raw commodities..."
+                  placeholder="Search products, categories or SKU..."
                   className="w-full pl-10 pr-4 py-2.5 text-xs bg-slate-900/90 text-white placeholder-slate-400 border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-400"
                 />
               </div>
@@ -474,15 +474,15 @@ export const HomePage: React.FC = () => {
                   <div className="text-sm font-bold text-slate-900 mt-1">FOB · CIF · DDP · EXW</div>
                 </div>
                 <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
-                  <div className="text-slate-500">Customs Clearance</div>
+                  <div className="text-slate-500">Customs Requirements</div>
                   <div className="text-sm font-bold text-slate-900 mt-1">Discussed per enquiry</div>
                 </div>
                 <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
-                  <div className="text-slate-500">Trade Verification</div>
+                  <div className="text-slate-500">Supplier Verification</div>
                   <div className="text-sm font-bold text-slate-900 mt-1">Supplier checks pending</div>
                 </div>
                 <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
-                  <div className="text-slate-500">Support Desk</div>
+                  <div className="text-slate-500">Contact</div>
                   <div className="text-sm font-bold text-emerald-600 mt-1">WhatsApp contact</div>
                 </div>
               </div>
