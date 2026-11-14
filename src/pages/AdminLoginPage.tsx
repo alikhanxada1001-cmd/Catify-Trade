@@ -82,7 +82,7 @@ export const AdminLoginPage: React.FC = () => {
                 Catify Trade Console
               </h1>
               <p className="text-xs text-slate-400 mt-1">
-                {isAdminSetupRequired ? 'Enter your administrator email and password to activate secure access.' : 'Sign in to manage products, orders, RFQs, and settings.'}
+                'Sign in with your administrator email and password to access the dashboard.'
               </p>
             </div>
           </div>
@@ -132,7 +132,7 @@ export const AdminLoginPage: React.FC = () => {
                   autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder={isAdminSetupRequired ? "Create a strong password (12+ characters)" : "Enter admin password"}
+                  placeholder="Enter admin password"
                   disabled={isSubmitting}
                   className="w-full pl-10 pr-10 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-950 focus:bg-white disabled:opacity-60"
                 />
@@ -156,7 +156,7 @@ export const AdminLoginPage: React.FC = () => {
             >
               <LogIn className="w-4 h-4 text-amber-400" />
               <span>
-                {isSubmitting ? 'Please wait…' : isAdminSetupRequired ? 'Create Administrator Account' : 'Sign In to Admin Dashboard'}
+                {isSubmitting ? 'Please wait…' : 'Login to Admin Dashboard'}
               </span>
             </button>
           </form>
