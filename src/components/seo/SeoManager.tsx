@@ -150,7 +150,7 @@ export function getPageSeoMetadata({
         : 'Wholesale Product Catalogue | Catify Trade';
       const description = clampDescription(
         activeCategory
-          ? `Shop ${activeCategory.name} for wholesale export or single-unit retail delivery across Pakistan and 160+ countries with customs support.`
+          ? `Explore sample ${activeCategory.name} listings. Confirm supplier availability, final pricing and shipping in a written quotation.`
           : 'Browse sample apparel and accessory listings. Product availability, final pricing and supplier details are confirmed after enquiry.'
       );
 
@@ -220,13 +220,12 @@ export function getPageSeoMetadata({
         };
       }
 
-      const productPrice = product.salePriceUSD ?? product.regularPriceUSD;
       const productImage = resolveUrl(product.images?.[0] || DEFAULT_LOGO_PATH, origin);
 
       return {
         title: truncateTitle(product.title, ' | Catify Trade'),
         description: clampDescription(
-          `${product.shortDescription} SKU: ${product.sku}. Origin: ${product.countryOfOrigin}. Available for retail & bulk B2B export.`
+          `${product.shortDescription} SKU: ${product.sku}. Sample listing; supplier, stock, final price and shipping details are confirmed after enquiry.`
         ),
         keywords: `${product.title}, ${product.category}, ${product.sku}, HS ${product.hsCode}, ${product.countryOfOrigin} export, Catify Trade`,
         robots: INDEX_ROBOTS,
@@ -252,25 +251,7 @@ export function getPageSeoMetadata({
                 '@type': 'Brand',
                 name: product.supplierName || brandName,
               },
-              aggregateRating: {
-                '@type': 'AggregateRating',
-                ratingValue: product.rating.toFixed(2),
-                reviewCount: Math.max(1, product.reviewsCount),
-              },
-              offers: {
-                '@type': 'Offer',
-                url: canonicalUrl,
-                priceCurrency: 'USD',
-                price: productPrice.toFixed(2),
-                availability:
-                  product.stock > 0
-                    ? 'https://schema.org/InStock'
-                    : 'https://schema.org/OutOfStock',
-                seller: {
-                  '@type': 'Organization',
-                  name: 'Catify Trade',
-                },
-              },
+
             },
             {
               '@type': 'BreadcrumbList',
@@ -326,7 +307,7 @@ export function getPageSeoMetadata({
           ? suppliers.find((s) => s.id === selectedSupplierId)
           : undefined;
       const title = supplier
-        ? truncateTitle(supplier.name, ' | Verified Supplier')
+        ? truncateTitle(supplier.name, ' | Supplier Profile')
         : 'Supplier Directory | Catify Trade';
       const description = clampDescription(
         supplier
