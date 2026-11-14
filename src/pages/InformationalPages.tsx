@@ -32,19 +32,19 @@ export const AboutPage: React.FC = () => {
             About Catify Trade International
           </h1>
           <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-            Bridging international borders through verified industrial manufacturing, transparent wholesale trade terms, and friction-free cross-border customs logistics.
+            A product discovery and inquiry platform designed to help buyers explore sample listings and discuss wholesale sourcing requirements.
           </p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
         <div className="space-y-4 text-xs sm:text-sm text-slate-600 leading-relaxed">
-          <h2 className="text-xl font-bold text-slate-900">Our International Footprint</h2>
+          <h2 className="text-xl font-bold text-slate-900">Our Purpose</h2>
           <p>
-            Founded to address the structural fragmentation in global cross-border wholesale procurement, <strong>CATIFY TRADE</strong> operates an integrated marketplace connecting certified manufacturing plants in Europe, Asia, and the Middle East with commercial importers across 160+ countries.
+            <strong>CATIFY TRADE</strong> provides an online catalogue and a simple way for buyers to share product, quantity and destination requirements. The current catalogue is a demonstration catalogue; supplier relationships and live stock are not yet independently verified.
           </p>
           <p>
-            Unlike traditional trading agents with opaque markups and unverified claims, we provide transparent multi-tiered pricing, escrow payment protection, direct SWIFT MT103 wire settlements, and full-spectrum customs clearance documentation.
+            We aim to make product discovery and quotation requests straightforward. Final supplier identity, product specifications, stock, shipping costs, payment terms and any required certificates must be confirmed in writing before an order or payment.
           </p>
           <div className="pt-2">
             <button
@@ -73,15 +73,15 @@ export const AboutPage: React.FC = () => {
           <div className="space-y-3 text-xs">
             <div className="flex items-start gap-2.5">
               <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-              <span>Direct factory-to-port logistics management (FOB, CIF, DDP, EXW)</span>
+              <span>Sourcing and wholesale inquiries</span>
             </div>
             <div className="flex items-start gap-2.5">
               <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-              <span>Multi-currency settlement support in USD, EUR, GBP, AED, PKR, CNY, JPY</span>
+              <span>Product and destination requirement review</span>
             </div>
             <div className="flex items-start gap-2.5">
               <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-              <span>Audited partner mills and ISO 9001 certified precision manufacturers</span>
+              <span>Supplier credentials are checked before any claim of verification</span>
             </div>
           </div>
         </div>
