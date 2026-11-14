@@ -277,7 +277,7 @@ export const FAQsPage: React.FC = () => {
     },
     {
       q: 'How are customs duties and import taxes calculated?',
-      a: 'Import duties and taxes depend on the destination country's current rules, product classification and declared value. This website does not provide live customs calculations; confirm charges with the relevant customs authority or a licensed broker.',
+      a: 'Import duties and taxes depend on the destination-country regulations, product classification and declared value. This website does not provide live customs calculations; confirm charges with the relevant customs authority or a licensed broker.',
     },
     {
       q: 'What shipping options do you offer for cross-border cargo?',
