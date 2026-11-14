@@ -138,7 +138,7 @@ export const ProductDetailPage: React.FC = () => {
         <div className="lg:col-span-6 space-y-4 lg:sticky lg:top-28">
           <div className="relative aspect-4/3 rounded-2xl overflow-hidden border border-slate-200 bg-slate-50 shadow-xs">
             <img
-              src={product.images[activeImageIndex] || product.images[0]}
+              src={product.images[activeImageIndex] || product.images[0] || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=1200'}
               alt={product.title}
               referrerPolicy="no-referrer"
               className="w-full h-full object-cover"
