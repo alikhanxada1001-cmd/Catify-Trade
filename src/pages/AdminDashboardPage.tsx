@@ -983,27 +983,41 @@ export const AdminDashboardPage: React.FC = () => {
 
               <div className="space-y-2">
                 <label className="block font-semibold text-slate-700 mb-1">Product Images (R2 storage)</label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  disabled={isImageUploading || isProductSaving}
-                  onChange={async (event) => {
-                    const file = event.target.files?.[0];
-                    if (!file) return;
-                    setProductActionError('');
-                    setIsImageUploading(true);
-                    try {
-                      const imageUrl = await uploadProductImage(file);
-                      setEditingProduct((current) => current ? { ...current, images: [...(current.images || []), imageUrl] } : current);
-                    } catch (error) {
-                      setProductActionError(error instanceof Error ? error.message : 'Image upload failed.');
-                    } finally {
-                      setIsImageUploading(false);
-                      event.target.value = '';
-                    }
-                  }}
-                  className="block w-full text-xs text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-blue-50 file:px-3 file:py-2 file:font-semibold file:text-blue-900 hover:file:bg-blue-100"
-                />
+                <label className={`flex cursor-pointer items-center justify-center gap-2 rounded-xl border-2 border-dashed border-blue-300 bg-blue-50 px-4 py-4 text-sm font-bold text-blue-900 transition hover:border-blue-500 hover:bg-blue-100 ${(isImageUploading || isProductSaving) ? 'cursor-not-allowed opacity-60' : ''}`}>
+                  <Images className="h-5 w-5" />
+                  {isImageUploading ? 'Uploading product images…' : 'Choose product images'}
+                  <input
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp,image/gif"
+                    multiple
+                    disabled={isImageUploading || isProductSaving}
+                    onChange={async (event) => {
+                      const files = Array.from(event.target.files || []);
+                      if (!files.length) return;
+                      setProductActionError('');
+                      setIsImageUploading(true);
+                      const uploadedUrls: string[] = [];
+                      try {
+                        for (const file of files) {
+                          if (file.size > 8 * 1024 * 1024) {
+                            throw new Error(`${file.name} is larger than the 8 MB limit.`);
+                          }
+                          uploadedUrls.push(await uploadProductImage(file));
+                        }
+                        setEditingProduct((current) => current ? {
+                          ...current,
+                          images: [...(current.images || []), ...uploadedUrls],
+                        } : current);
+                      } catch (error) {
+                        setProductActionError(error instanceof Error ? error.message : 'Image upload failed.');
+                      } finally {
+                        setIsImageUploading(false);
+                        event.target.value = '';
+                      }
+                    }}
+                    className="sr-only"
+                  />
+                </label>
                 {isImageUploading && <p className="text-xs text-blue-700">Uploading image securely to Cloudflare R2…</p>}
                 {!!editingProduct.images?.length && (
                   <div className="flex flex-wrap gap-2">
