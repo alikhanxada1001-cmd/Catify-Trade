@@ -23,4 +23,4 @@ Disallow: /cart
 Disallow: /order-success
 Disallow: /dashboard
 
-Sitemap: /sitemap.xml
+Sitemap: https://catify-trade.vercel.app/sitemap.xml
