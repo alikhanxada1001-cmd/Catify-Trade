@@ -34,6 +34,8 @@ export const RequestQuotePage: React.FC = () => {
   const [buyerEmail, setBuyerEmail] = useState('');
   const [buyerPhone, setBuyerPhone] = useState('');
   const [submittedRFQNumber, setSubmittedRFQNumber] = useState<string | null>(null);
+  const [submitError, setSubmitError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const availableCertifications = [
     'ISO 9001:2015',
@@ -53,27 +55,33 @@ export const RequestQuotePage: React.FC = () => {
     );
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!productTitle || !buyerEmail || !buyerName) return;
-
-    const rfq = submitRFQ({
-      productTitle,
-      category,
-      quantity: Number(quantity),
-      targetPriceUSD: Number(targetPriceUSD),
-      destinationCountry,
-      destinationPort: destinationPort || 'Primary Marine Container Terminal',
-      incoterm,
-      requiredCertifications: selectedCertifications,
-      specifications,
-      buyerName,
-      buyerCompany: buyerCompany || 'Direct Commercial Importer',
-      buyerEmail,
-      buyerPhone,
-    });
-
-    setSubmittedRFQNumber(rfq.rfqNumber);
+    if (!productTitle.trim() || !buyerEmail.trim() || !buyerName.trim() || isSubmitting) return;
+    setSubmitError('');
+    setIsSubmitting(true);
+    try {
+      const rfq = await submitRFQ({
+        productTitle: productTitle.trim(),
+        category,
+        quantity: Number(quantity),
+        targetPriceUSD: Number(targetPriceUSD),
+        destinationCountry,
+        destinationPort: destinationPort || 'To be confirmed',
+        incoterm,
+        requiredCertifications: selectedCertifications,
+        specifications,
+        buyerName: buyerName.trim(),
+        buyerCompany: buyerCompany.trim(),
+        buyerEmail: buyerEmail.trim(),
+        buyerPhone: buyerPhone.trim(),
+      });
+      setSubmittedRFQNumber(rfq.rfqNumber);
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : 'Unable to submit your request. Please retry.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -89,7 +97,7 @@ export const RequestQuotePage: React.FC = () => {
             Request an International Trade Quotation (RFQ)
           </h1>
           <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-            Submit your industrial bill of materials, container quantity specifications, target Incoterm, and required certifications. Our global trade desk will negotiate with audited manufacturing plants and issue an official Proforma Invoice.
+            Share your product requirements, order quantity, destination and preferred Incoterm. Your request is securely recorded so the team can review the details and respond.
           </p>
         </div>
       </div>
@@ -107,7 +115,7 @@ export const RequestQuotePage: React.FC = () => {
                 Quotation Reference: {submittedRFQNumber}
               </p>
               <p className="text-xs text-slate-600 max-w-md mx-auto mt-2 leading-relaxed">
-                Your request has been routed to our commercial desks in Germany, China, and Pakistan. A certified trade officer will compile the factory lead time, ocean freight rate, and proforma quote to <strong>{buyerEmail}</strong>.
+                Your quotation request has been saved with reference <strong>{submittedRFQNumber}</strong>. Please keep this reference when contacting the team. We have not sent an automated email confirmation.
               </p>
             </div>
 
@@ -148,6 +156,7 @@ export const RequestQuotePage: React.FC = () => {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-6">
+            {submitError && <div role="alert" className="rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">{submitError}</div>}
             <div>
               <h3 className="text-base font-bold text-slate-900 mb-1">1. Product &amp; Volume Parameters</h3>
               <p className="text-xs text-slate-500 mb-4">Specify the goods, desired quantity, and target purchase price</p>
