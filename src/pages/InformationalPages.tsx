@@ -98,11 +98,34 @@ export const ContactPage: React.FC = () => {
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
   const [sent, setSent] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !email || !message) return;
-    setSent(true);
+    if (!name.trim() || !email.trim() || message.trim().length < 10 || isSubmitting) return;
+    setIsSubmitting(true);
+    setSubmitError('');
+    try {
+      const response = await fetch('https://catifytrade-api.catifytrade.workers.dev/api/inquiries', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contactPerson: name.trim(), email: email.trim(), companyName: '',
+          cargoDetails: [subject.trim(), message.trim()].filter(Boolean).join(' — '),
+          serviceType: 'general_trade', phone: '', originCountry: '',
+          destinationCountry: '', estimatedVolume: '', preferredIncoterm: '',
+        }),
+        signal: AbortSignal.timeout(15000),
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || 'Your message could not be submitted. Please retry.');
+      setSent(true);
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : 'Network error. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -110,7 +133,7 @@ export const ContactPage: React.FC = () => {
       <div className="text-center max-w-2xl mx-auto space-y-2">
         <h1 className="text-3xl font-extrabold text-slate-900">Contact Catify Trade Desk</h1>
         <p className="text-xs sm:text-sm text-slate-500">
-          Our international trade coordinators are available for customs inquiries, bulk quotations, and vessel booking assistance.
+          Send a message about products, wholesale sourcing or shipping requirements. For a direct conversation, use the WhatsApp or email links below.
         </p>
       </div>
 
@@ -122,7 +145,7 @@ export const ContactPage: React.FC = () => {
               <Phone className="w-5 h-5" />
             </div>
             <h3 className="text-sm font-bold text-slate-900">Instant WhatsApp &amp; Phone</h3>
-            <p className="text-xs text-slate-500">24/7 Trade Officer Hotline</p>
+            <p className="text-xs text-slate-500">WhatsApp contact</p>
             <a
               href={`https://wa.me/${settings.whatsapp.replace(/[^0-9]/g, '')}`}
               target="_blank"
@@ -137,8 +160,8 @@ export const ContactPage: React.FC = () => {
             <div className="p-2.5 rounded-lg bg-blue-50 text-blue-900 w-fit">
               <Mail className="w-5 h-5" />
             </div>
-            <h3 className="text-sm font-bold text-slate-900">Official Commercial Email</h3>
-            <p className="text-xs text-slate-500">For contracts, L/C, and proforma inquiries</p>
+            <h3 className="text-sm font-bold text-slate-900">Email Contact</h3>
+            <p className="text-xs text-slate-500">For product and business inquiries</p>
             <a
               href={`mailto:${settings.email}`}
               className="text-xs font-bold text-blue-900 hover:underline block mt-1"
@@ -151,8 +174,8 @@ export const ContactPage: React.FC = () => {
             <div className="p-2.5 rounded-lg bg-amber-50 text-amber-700 w-fit">
               <Globe className="w-5 h-5" />
             </div>
-            <h3 className="text-sm font-bold text-slate-900">Configurable Web Domain</h3>
-            <p className="text-xs text-slate-500">Domain configuration placeholder</p>
+            <h3 className="text-sm font-bold text-slate-900">Website</h3>
+            <p className="text-xs text-slate-500">Current website address</p>
             <span className="text-xs font-mono font-bold text-slate-800 block mt-1 break-all">
               {settings.domain}
             </span>
@@ -164,9 +187,9 @@ export const ContactPage: React.FC = () => {
           {sent ? (
             <div className="py-12 text-center space-y-3">
               <CheckCircle className="w-12 h-12 text-emerald-600 mx-auto" />
-              <h3 className="text-base font-bold text-slate-900">Message Dispatched to Trade Desk</h3>
+              <h3 className="text-base font-bold text-slate-900">Message Received</h3>
               <p className="text-xs text-slate-600 max-w-sm mx-auto">
-                Thank you, {name}. A commercial representative will reply to <strong>{email}</strong> within 6 business hours.
+                Thank you, {name}. Your message has been saved with our inquiry records. No automated email reply has been sent.
               </p>
               <button
                 onClick={() => setSent(false)}
@@ -177,6 +200,7 @@ export const ContactPage: React.FC = () => {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4 text-xs">
+              {submitError && <div role="alert" className="rounded-xl border border-rose-200 bg-rose-50 px-3 py-2.5 text-rose-700">{submitError}</div>}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block font-semibold text-slate-700 mb-1">Your Full Name *</label>
@@ -220,17 +244,18 @@ export const ContactPage: React.FC = () => {
                   required
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Detail your inquiry, requested quantities, or compliance specifications..."
+                  placeholder="Tell us what product or service you need, estimated quantity and destination..."
                   className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full py-3 bg-blue-950 hover:bg-blue-900 text-white font-bold rounded-xl transition-colors flex items-center justify-center gap-2"
+                disabled={isSubmitting}
+                className="w-full py-3 bg-blue-950 disabled:opacity-60 hover:bg-blue-900 text-white font-bold rounded-xl transition-colors flex items-center justify-center gap-2"
               >
                 <Send className="w-3.5 h-3.5 text-amber-400" />
-                <span>Send Message to Trade Operations</span>
+                <span>{isSubmitting ? 'Sending…' : 'Send Message'}</span>
               </button>
             </form>
           )}
