@@ -111,8 +111,8 @@ export interface TradeContextType {
 
   // RFQ
   rfqs: RFQ[];
-  submitRFQ: (rfqData: Omit<RFQ, 'id' | 'rfqNumber' | 'createdAt' | 'status'>) => RFQ;
-  updateRFQ: (rfq: RFQ) => void;
+  submitRFQ: (rfqData: Omit<RFQ, 'id' | 'rfqNumber' | 'createdAt' | 'status'>) => Promise<RFQ>;
+  updateRFQ: (rfq: RFQ) => Promise<void>;
   isRFQModalOpen: boolean;
   rfqModalProduct: Product | null;
   openRFQModal: (product?: Product | null) => void;
@@ -857,27 +857,30 @@ export const TradeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     setAdminLogs(TradeStorageService.getLogs());
   };
 
-  // RFQ Engine
-  const submitRFQ = (rfqData: Omit<RFQ, 'id' | 'rfqNumber' | 'createdAt' | 'status'>): RFQ => {
-    const rfqNumber = `RFQ-CAT-${Math.floor(100 + Math.random() * 900)}`;
-    const newRFQ: RFQ = {
-      ...rfqData,
-      id: `rfq-${Date.now()}`,
-      rfqNumber,
-      createdAt: new Date().toISOString(),
-      status: 'pending',
-    };
-
-    TradeStorageService.saveRFQ(newRFQ);
-    setRFQs(TradeStorageService.getRFQs());
-    setAdminLogs(TradeStorageService.getLogs());
+  // RFQs are persisted in Cloudflare D1 so requests are available to the admin team.
+  const submitRFQ = async (rfqData: Omit<RFQ, 'id' | 'rfqNumber' | 'createdAt' | 'status'>): Promise<RFQ> => {
+    const response = await fetch(`${API_BASE}/rfqs`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(rfqData), signal: AbortSignal.timeout(15000),
+    });
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok || !payload.data) throw new Error(payload.error || 'Your quotation request could not be submitted. Please retry.');
+    const newRFQ = payload.data as RFQ;
+    setRFQs((current) => [newRFQ, ...current.filter((item) => item.id !== newRFQ.id)]);
+    try { localStorage.setItem('catify_rfqs', JSON.stringify([newRFQ, ...TradeStorageService.getRFQs()])); } catch { /* D1 is the source of truth. */ }
     return newRFQ;
   };
 
-  const updateRFQ = (rfq: RFQ) => {
-    TradeStorageService.saveRFQ(rfq);
-    setRFQs(TradeStorageService.getRFQs());
-    setAdminLogs(TradeStorageService.getLogs());
+  const updateRFQ = async (rfq: RFQ): Promise<void> => {
+    const token = getAdminToken();
+    if (!token) throw new Error('Your admin session has expired. Please sign in again.');
+    const response = await fetch(`${API_BASE}/admin/rfqs/${encodeURIComponent(rfq.id)}`, {
+      method: 'PATCH', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify(rfq), signal: AbortSignal.timeout(12000),
+    });
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(payload.error || 'RFQ update failed.');
+    setRFQs((current) => current.map((item) => item.id === rfq.id ? rfq : item));
   };
 
   const openRFQModal = (product?: Product | null) => {
