@@ -114,6 +114,43 @@ export default {
         if (!admin) return respond({ error: "Your session has expired. Please sign in again." }, 401);
         const resource = parts[2];
 
+        if (resource === "profile" && request.method === "PUT") {
+          const body = await request.json();
+          const currentPassword = String(body.currentPassword || "");
+          const newEmail = String(body.email || "").trim().toLowerCase();
+          const newPassword = body.newPassword == null ? "" : String(body.newPassword);
+          if (!currentPassword) return respond({ error: "Enter your current password to confirm this change." }, 400);
+          if (!validEmail(newEmail)) return respond({ error: "Enter a valid administrator email address." }, 400);
+          if (newPassword && (newPassword.length < 12 || newPassword.length > 128)) return respond({ error: "New password must be between 12 and 128 characters." }, 400);
+          const account = await env.DB.prepare("SELECT id,email,password_hash FROM admin_users WHERE id=? AND is_active=1").bind(admin.id).first();
+          if (!account?.password_hash?.includes(":")) return respond({ error: "Administrator account could not be verified." }, 401);
+          const [saltHex, expectedHash] = account.password_hash.split(":");
+          const salt = new Uint8Array((saltHex.match(/.{2}/g) || []).map((part) => parseInt(part, 16)));
+          if (!safeEqual(await hashPassword(currentPassword, salt), expectedHash)) return respond({ error: "Current password is incorrect." }, 401);
+          const duplicate = await env.DB.prepare("SELECT id FROM admin_users WHERE email=? AND id<>?").bind(newEmail, admin.id).first();
+          if (duplicate) return respond({ error: "That email address is already in use." }, 409);
+          let nextHash = account.password_hash;
+          if (newPassword) {
+            const nextSalt = crypto.getRandomValues(new Uint8Array(16));
+            nextHash = hex(nextSalt) + ":" + await hashPassword(newPassword, nextSalt);
+          }
+          try {
+            await env.DB.prepare("UPDATE admin_users SET email=?,password_hash=? WHERE id=?")
+              .bind(newEmail, nextHash, admin.id).run();
+          } catch (error) {
+            if (String(error?.message || "").includes("UNIQUE")) return respond({ error: "That email address is already in use." }, 409);
+            throw error;
+          }
+          const currentToken = (request.headers.get("Authorization") || "").replace(/^Bearer\\s+/i, "");
+          if (currentToken) {
+            await env.DB.prepare("DELETE FROM admin_sessions WHERE admin_user_id=? AND token_hash<>?")
+              .bind(admin.id, await tokenHash(currentToken)).run();
+          }
+          await env.DB.prepare("INSERT INTO admin_activity_logs(id,admin_email,action,target,details) VALUES(?,?,?,?,?)")
+            .bind(crypto.randomUUID(), newEmail, "ADMIN_PROFILE_UPDATED", admin.id, "Administrator credentials updated").run();
+          return respond({ ok: true, email: newEmail });
+        }
+
         if (resource === "products" && request.method === "GET") {
           const result = await env.DB.prepare("SELECT * FROM products ORDER BY created_at DESC").all();
           return respond({ data: (result.results || []).map((row) => ({ ...row, ...parseData(row) })) });
