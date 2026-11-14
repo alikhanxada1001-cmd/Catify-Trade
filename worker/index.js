@@ -193,6 +193,23 @@ export default {
         return respond({ data: payload }, 201);
       }
 
+      if (route === "admin" && parts[2] === "assets" && request.method === "GET") {
+        if (!await authenticate()) return respond({ error: "Your session has expired. Please sign in again." }, 401);
+        const listed = await env.ASSETS.list({ limit: 1000 });
+        const items = (listed.objects || []).map((item) => ({
+          key: item.key, size: item.size, uploaded: item.uploaded?.toISOString?.() || null,
+          url: API + "/assets/" + item.key
+        }));
+        return respond({ data: items, truncated: Boolean(listed.truncated), cursor: listed.cursor || null });
+      }
+      if (route === "admin" && parts[2] === "assets" && parts[3] && request.method === "DELETE") {
+        if (!await authenticate()) return respond({ error: "Your session has expired. Please sign in again." }, 401);
+        const key = decodeURIComponent(parts.slice(3).join("/"));
+        if (!key || key.includes("..")) return respond({ error: "Invalid image key." }, 400);
+        await env.ASSETS.delete(key);
+        return respond({ ok: true });
+      }
+
       if (route === "assets" && parts[2] && request.method === "GET") {
         const object = await env.ASSETS.get(parts.slice(2).join("/"));
         if (!object) return respond({ error: "Image not found." }, 404);
