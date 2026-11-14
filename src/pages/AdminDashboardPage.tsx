@@ -31,6 +31,7 @@ import {
   Images,
   Copy,
   RefreshCw,
+  UserCog,
 } from 'lucide-react';
 import { Product, Order, OrderStatus, RFQ, TradeInquiry, Coupon, CurrencyCode, Currency } from '../types';
 import { AdminLoginPage } from './AdminLoginPage';
@@ -64,11 +65,12 @@ export const AdminDashboardPage: React.FC = () => {
     setUserRole,
     isAdminAuthenticated,
     logoutAdmin,
+    updateAdminProfile,
   } = useTrade();
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<
-    'overview' | 'products' | 'media' | 'orders' | 'rfqs' | 'inquiries' | 'currencies' | 'settings' | 'logs'
+    'overview' | 'products' | 'media' | 'orders' | 'rfqs' | 'inquiries' | 'currencies' | 'settings' | 'profile' | 'logs'
   >('overview');
 
   // Product Add / Edit Modal state
@@ -113,6 +115,15 @@ export const AdminDashboardPage: React.FC = () => {
   const [settingsHero, setSettingsHero] = useState(settings.heroHeading);
   const [settingsSubhero, setSettingsSubhero] = useState(settings.heroSubheading);
   const [settingsSavedNotice, setSettingsSavedNotice] = useState(false);
+  const [profileEmail, setProfileEmail] = useState(() => {
+    try { return JSON.parse(window.sessionStorage.getItem('catify_admin_auth_session') || '{}').email || ''; } catch { return ''; }
+  });
+  const [profileCurrentPassword, setProfileCurrentPassword] = useState('');
+  const [profileNewPassword, setProfileNewPassword] = useState('');
+  const [profileConfirmPassword, setProfileConfirmPassword] = useState('');
+  const [profileMessage, setProfileMessage] = useState('');
+  const [profileError, setProfileError] = useState('');
+  const [profileSaving, setProfileSaving] = useState(false);
 
   // Financial Computations for Overview
   const totalRevenueUSD = orders.reduce((sum, o) => sum + o.totalUSD, 0);
@@ -201,6 +212,26 @@ export const AdminDashboardPage: React.FC = () => {
     } catch (error) {
       setRfqActionError(error instanceof Error ? error.message : 'Could not update this quotation. Please retry.');
     }
+  };
+
+  const handleSaveAdminProfile = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (profileSaving) return;
+    setProfileError('');
+    setProfileMessage('');
+    if (profileNewPassword && profileNewPassword !== profileConfirmPassword) {
+      setProfileError('New password and confirmation do not match.');
+      return;
+    }
+    setProfileSaving(true);
+    try {
+      const result = await updateAdminProfile(profileCurrentPassword, profileEmail, profileNewPassword);
+      if (!result.success) { setProfileError(result.message); return; }
+      setProfileMessage(result.message);
+      setProfileCurrentPassword('');
+      setProfileNewPassword('');
+      setProfileConfirmPassword('');
+    } finally { setProfileSaving(false); }
   };
 
   const handleSaveSettings = (e: React.FormEvent) => {
@@ -316,6 +347,7 @@ export const AdminDashboardPage: React.FC = () => {
                 { id: 'inquiries', label: `Trade Leads (${inquiries.length})`, icon: Truck },
                 { id: 'currencies', label: `Currencies & Rates (${currencies.length})`, icon: DollarSign },
                 { id: 'settings', label: 'Store Settings & Brand', icon: Settings },
+                { id: 'profile', label: 'Profile Settings', icon: UserCog },
                 { id: 'logs', label: `Audit Trail (${adminLogs.length})`, icon: ShieldAlert },
               ].map((tab) => {
                 const Icon = tab.icon;
@@ -742,6 +774,42 @@ export const AdminDashboardPage: React.FC = () => {
             </table>
           </div>
         </div>
+      )}
+
+      {activeTab === 'profile' && (
+        <section className="max-w-2xl space-y-5">
+          <div>
+            <h2 className="text-lg font-extrabold text-slate-900">Profile Settings</h2>
+            <p className="mt-1 text-sm text-slate-500">Update administrator login details. Your current password is required to authorize changes.</p>
+          </div>
+          <form onSubmit={handleSaveAdminProfile} className="space-y-4 rounded-2xl border border-slate-200 bg-white p-5 sm:p-7">
+            {profileError && <p role="alert" className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm text-rose-700">{profileError}</p>}
+            {profileMessage && <p role="status" className="rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-700">{profileMessage}</p>}
+            <div>
+              <label className="mb-1 block text-sm font-semibold text-slate-700">Administrator Email</label>
+              <input type="email" required value={profileEmail} onChange={(e) => setProfileEmail(e.target.value)} autoComplete="username" className="w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-900" />
+            </div>
+            <div>
+              <label className="mb-1 block text-sm font-semibold text-slate-700">Current Password</label>
+              <input type="password" required value={profileCurrentPassword} onChange={(e) => setProfileCurrentPassword(e.target.value)} autoComplete="current-password" className="w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-900" />
+            </div>
+            <div className="border-t border-slate-100 pt-4">
+              <h3 className="text-sm font-bold text-slate-900">Change Password <span className="font-normal text-slate-400">(optional)</span></h3>
+              <p className="mt-1 text-xs text-slate-500">Leave both new password fields empty if you only want to change your email.</p>
+            </div>
+            <div>
+              <label className="mb-1 block text-sm font-semibold text-slate-700">New Password</label>
+              <input type="password" minLength={12} maxLength={128} value={profileNewPassword} onChange={(e) => setProfileNewPassword(e.target.value)} autoComplete="new-password" placeholder="At least 12 characters" className="w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-900" />
+            </div>
+            <div>
+              <label className="mb-1 block text-sm font-semibold text-slate-700">Confirm New Password</label>
+              <input type="password" minLength={12} maxLength={128} value={profileConfirmPassword} onChange={(e) => setProfileConfirmPassword(e.target.value)} autoComplete="new-password" className="w-full rounded-xl border border-slate-300 px-3 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-900" />
+            </div>
+            <button type="submit" disabled={profileSaving} className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-blue-950 px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-blue-900 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto">
+              <UserCog className="h-4 w-4" /> {profileSaving ? 'Saving Profile…' : 'Save Profile Changes'}
+            </button>
+          </form>
+        </section>
       )}
 
       {/* TAB 7: Website Settings */}
