@@ -339,12 +339,7 @@ export function getPageSeoMetadata({
                     addressLocality: supplier.city,
                     addressCountry: supplier.country,
                   },
-                  aggregateRating: {
-                    '@type': 'AggregateRating',
-                    ratingValue: supplier.rating.toFixed(2),
-                    bestRating: '5',
-                    ratingCount: 25,
-                  },
+
                 }
               : {
                   '@type': 'CollectionPage',
@@ -501,27 +496,12 @@ export function getPageSeoMetadata({
 
     case 'faqs': {
       const faqItems = [
-        {
-          q: 'What are the Minimum Order Quantities (MOQs) on Catify Trade?',
-          a: 'MOQs vary by commodity. Precision CNC and industrial machinery items start as low as 4-5 units, whereas agricultural salts and textile bolts have volume minimums (e.g. 20-50 units) for container freight efficiency. Sample units can also be ordered at standard retail rates.',
-        },
-        {
-          q: 'Which international payment methods are supported?',
-          a: 'We accept SWIFT MT103 international bank wire transfers (T/T), Irrevocable Letters of Credit (L/C at sight) for wholesale contracts over $5,000, international credit cards (Visa, MasterCard, American Express), and PayPal Business.',
-        },
-        {
-          q: 'How are customs duties and import taxes calculated?',
-          a: 'Duties depend on your destination country and the specific HS Code (Harmonized Tariff Schedule) of the product. Our platform provides estimated landed customs duty calculations at checkout based on current bilateral tariff schedules.',
-        },
-        {
-          q: 'What shipping options do you offer for cross-border cargo?',
-          a: 'We provide Priority Air Cargo Express (7-10 business days) via DHL/FedEx for urgent machinery parts and samples, as well as Ocean Freight LCL (Less-than-Container Load) and FCL (Full Container Load 20ft/40ft) via Tier-1 maritime carriers (Maersk, MSC, Hapag-Lloyd).',
-        },
-        {
-          q: 'How does escrow protection safeguard international buyers?',
-          a: 'Payments are held securely by Catify Trade until the goods pass pre-shipment quality inspection and the Bill of Lading (B/L) or Air Waybill is formally issued and verified against buyer specifications.',
-        },
-      ];
+        { q: 'Are product prices and stock confirmed?', a: 'No. Product listings and tier prices are samples. Supplier availability, final specifications, stock and pricing are confirmed after an enquiry.' },
+        { q: 'Can I pay online through this website?', a: 'No. There is no online payment gateway or escrow service connected to this website. Confirm payment terms and beneficiary independently before any transfer.' },
+        { q: 'Does Catify Trade calculate live customs duties?', a: 'No. Duties and taxes depend on destination rules and product classification. Confirm current charges with the destination customs authority or a licensed broker.' },
+        { q: 'Which shipping options may be available?', a: 'Courier, air and sea freight may be options depending on route and shipment size. Costs, transit estimates and carrier availability must be confirmed in writing.' },
+        { q: 'Are suppliers verified?', a: 'No supplier profiles are currently published. Supplier details will be listed only after identity and business credentials have been checked.' },
+      ];;
 
       return {
         title: 'Import, Export & Wholesale FAQs | Catify Trade',
