@@ -159,6 +159,15 @@ export default {
           const result = await env.DB.prepare("SELECT * FROM trade_inquiries ORDER BY created_at DESC").all();
           return respond({ data: (result.results || []).map((row) => ({ ...row, ...parseData(row) })) });
         }
+        if (resource === "inquiries" && parts[3] && request.method === "PATCH") {
+          const body = await request.json();
+          const current = await env.DB.prepare("SELECT data_json FROM trade_inquiries WHERE id=?").bind(parts[3]).first();
+          if (!current) return respond({ error: "Inquiry not found." }, 404);
+          const payload = { ...parseData(current), ...body };
+          await env.DB.prepare("UPDATE trade_inquiries SET status=?,data_json=? WHERE id=?")
+            .bind(payload.status || "new", JSON.stringify(payload), parts[3]).run();
+          return respond({ ok: true });
+        }
       }
 
       if (route === "inquiries" && request.method === "POST") {
@@ -170,7 +179,7 @@ export default {
         const payload = { ...body, id, createdAt: new Date().toISOString(), status: "new" };
         await env.DB.prepare("INSERT INTO trade_inquiries(id,company_name,email,status,data_json) VALUES(?,?,?,'new',?)")
           .bind(id, String(body.companyName || "").slice(0, 180), String(body.email).trim().toLowerCase(), JSON.stringify(payload)).run();
-        return respond({ ok: true, id }, 201);
+        return respond({ ok: true, id, data: payload }, 201);
       }
 
       if (route === "rfqs" && request.method === "POST") {
