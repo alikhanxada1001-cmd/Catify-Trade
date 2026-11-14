@@ -133,7 +133,9 @@ export interface TradeContextType {
   userRole: 'customer' | 'admin';
   setUserRole: (role: 'customer' | 'admin') => void;
   isAdminAuthenticated: boolean;
-  loginAdmin: (username: string, password: string) => { success: boolean; message: string };
+  loginAdmin: (username: string, password: string) => Promise<{ success: boolean; message: string }>;
+  initializeAdmin: (email: string, password: string) => Promise<{ success: boolean; message: string }>;
+  isAdminSetupRequired: boolean;
   logoutAdmin: () => void;
   searchQuery: string;
   setSearchQuery: (q: string) => void;
@@ -142,8 +144,7 @@ export interface TradeContextType {
 const TradeContext = createContext<TradeContextType | undefined>(undefined);
 
 const ADMIN_SESSION_KEY = 'catify_admin_auth_session';
-const ADMIN_USERNAME = 'tardecatify@gmail.com';
-const ADMIN_PASSCODE = 'tradeCatify@213';
+const API_BASE = 'https://catifytrade-api.catifytrade.workers.dev/api';
 
 export interface ParsedRouteState {
   page: PageRoute;
@@ -279,7 +280,7 @@ const readAdminSession = (): boolean => {
     const raw = window.sessionStorage.getItem(ADMIN_SESSION_KEY);
     if (!raw) return false;
     const parsed = JSON.parse(raw);
-    return parsed?.authenticated === true && parsed?.email === ADMIN_USERNAME;
+    return parsed?.authenticated === true && typeof parsed?.token === 'string';
   } catch {
     return false;
   }
@@ -321,35 +322,48 @@ export const TradeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const [isRFQModalOpen, setIsRFQModalOpen] = useState<boolean>(false);
   const [rfqModalProduct, setRfqModalProduct] = useState<Product | null>(null);
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState<boolean>(() => readAdminSession());
+  const [isAdminSetupRequired, setIsAdminSetupRequired] = useState(false);
   const [userRole, setUserRoleState] = useState<'customer' | 'admin'>(() =>
     readAdminSession() && initialRoute.page === 'admin-dashboard' ? 'admin' : 'customer'
   );
 
-  // Sync the public catalogue with the Catify-Trade Cloudflare API.
+  // Load public catalogue and first-run admin setup state from the API.
   useEffect(() => {
     let active = true;
-    const apiBase = 'https://catifytrade-api.catifytrade.workers.dev/api';
-    const loadCatalogue = async () => {
+    const load = async () => {
       try {
-        const [productsResponse, categoriesResponse] = await Promise.all([
-          fetch(`${apiBase}/products`),
-          fetch(`${apiBase}/categories`),
+        const [productsResponse, categoriesResponse, setupResponse] = await Promise.all([
+          fetch(`${API_BASE}/products`, { signal: AbortSignal.timeout(12000) }),
+          fetch(`${API_BASE}/categories`, { signal: AbortSignal.timeout(12000) }),
+          fetch(`${API_BASE}/auth/status`, { signal: AbortSignal.timeout(12000) }),
         ]);
-        if (!productsResponse.ok || !categoriesResponse.ok) throw new Error('Catalogue API unavailable');
-        const [productsPayload, categoriesPayload] = await Promise.all([productsResponse.json(), categoriesResponse.json()]);
-        const remoteProducts = (productsPayload.data || []).map((row: any) => {
-          try { return typeof row.data_json === 'string' ? JSON.parse(row.data_json) : row.data_json; } catch { return null; }
-        }).filter((product: Product | null): product is Product => Boolean(product && product.id));
-        const remoteCategories = (categoriesPayload.data || []).map((row: any) => ({
-          id: row.id, name: row.name, slug: row.slug, description: row.description || '',
-          image: row.image_url || '', iconName: 'Package', productCount: 0, isTradeSpecialty: false,
-        } as Category));
+        if (!productsResponse.ok || !categoriesResponse.ok || !setupResponse.ok) throw new Error('Catalogue service unavailable');
+        const [productsPayload, categoriesPayload, setupPayload] = await Promise.all([
+          productsResponse.json(), categoriesResponse.json(), setupResponse.json(),
+        ]);
         if (!active) return;
-        if (remoteProducts.length) { setProducts(remoteProducts); localStorage.setItem('catify_products', JSON.stringify(remoteProducts)); }
-        if (remoteCategories.length) { setCategories(remoteCategories); localStorage.setItem('catify_categories', JSON.stringify(remoteCategories)); }
-      } catch (error) { console.warn('Catify-Trade API unavailable; keeping local catalogue.', error); }
+        const remoteProducts = (productsPayload.data || []).map((row: any) => {
+          try { return typeof row.data_json === 'string' ? JSON.parse(row.data_json) : row.data_json || row; } catch { return row; }
+        }).filter((product: Product) => Boolean(product && product.id));
+        const remoteCategories = (categoriesPayload.data || []).map((row: any) => ({
+          ...row, id: row.id, name: row.name, slug: row.slug, description: row.description || '',
+          image: row.image || row.image_url || '', iconName: row.iconName || 'Package',
+          productCount: 0, isTradeSpecialty: Boolean(row.isTradeSpecialty),
+        } as Category));
+        if (remoteProducts.length) {
+          setProducts(remoteProducts);
+          try { localStorage.setItem('catify_products', JSON.stringify(remoteProducts)); } catch (storageError) { console.warn('Catalogue cache could not be updated.', storageError); }
+        }
+        if (remoteCategories.length) {
+          setCategories(remoteCategories);
+          try { localStorage.setItem('catify_categories', JSON.stringify(remoteCategories)); } catch (storageError) { console.warn('Category cache could not be updated.', storageError); }
+        }
+        setIsAdminSetupRequired(!setupPayload.initialized);
+      } catch (error) {
+        if (active) console.warn('Catify-Trade API unavailable; local catalogue remains active.', error);
+      }
     };
-    void loadCatalogue();
+    void load();
     return () => { active = false; };
   }, []);
 
@@ -378,43 +392,67 @@ export const TradeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     setUserRoleState(role);
   };
 
-  const loginAdmin = (username: string, password: string): { success: boolean; message: string } => {
-    const normalizedUsername = username.trim().toLowerCase();
-    if (normalizedUsername !== ADMIN_USERNAME || password !== ADMIN_PASSCODE) {
-      return {
-        success: false,
-        message: 'Invalid username or password. Please verify your administrator credentials.',
-      };
-    }
-
+  const initializeAdmin = async (email: string, password: string): Promise<{ success: boolean; message: string }> => {
     try {
-      window.sessionStorage.setItem(
-        ADMIN_SESSION_KEY,
-        JSON.stringify({ authenticated: true, email: ADMIN_USERNAME })
-      );
+      const response = await fetch(`${API_BASE}/bootstrap`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim().toLowerCase(), password }),
+        signal: AbortSignal.timeout(15000),
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) return { success: false, message: payload.error || 'Administrator setup failed. Please try again.' };
+      setIsAdminSetupRequired(false);
+      return loginAdmin(email, password);
     } catch {
-      // SessionStorage fallback in restricted contexts
+      return { success: false, message: 'Cannot reach the security service. Check your internet connection and retry.' };
     }
-
-    setIsAdminAuthenticated(true);
-    setUserRoleState('admin');
-    setCurrentPage('admin-dashboard');
-
-    if (typeof window !== 'undefined' && parseUrlRoute(window.location.pathname).page !== 'admin-dashboard') {
-      window.history.pushState({}, '', '/admin');
-    }
-
-    return { success: true, message: 'Authenticated successfully.' };
   };
 
-  const logoutAdmin = () => {
+  const loginAdmin = async (username: string, password: string): Promise<{ success: boolean; message: string }> => {
     try {
-      window.sessionStorage.removeItem(ADMIN_SESSION_KEY);
+      const response = await fetch(`${API_BASE}/login`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: username.trim().toLowerCase(), password }),
+        signal: AbortSignal.timeout(15000),
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) return { success: false, message: payload.error || 'Sign-in failed. Please verify your details.' };
+      try {
+        window.sessionStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify({ authenticated: true, email: payload.user?.email, token: payload.token, expiresAt: payload.expiresAt }));
+      } catch {
+        return { success: false, message: 'Your browser blocked secure session storage. Enable site storage and try again.' };
+      }
+      setIsAdminAuthenticated(true);
+      setUserRoleState('admin');
+      setCurrentPage('admin-dashboard');
+      const productsResponse = await fetch(`${API_BASE}/admin/products`, { headers: { Authorization: `Bearer ${payload.token}` }, signal: AbortSignal.timeout(12000) });
+      if (productsResponse.ok) {
+        const productsPayload = await productsResponse.json();
+        const remoteProducts = (productsPayload.data || []).map((row: any) => {
+          try { return typeof row.data_json === 'string' ? JSON.parse(row.data_json) : row.data_json || row; } catch { return row; }
+        }).filter((product: Product) => Boolean(product && product.id));
+        setProducts(remoteProducts);
+      }
+      if (typeof window !== 'undefined' && parseUrlRoute(window.location.pathname).page !== 'admin-dashboard') window.history.pushState({}, '', '/admin');
+      return { success: true, message: 'Signed in successfully.' };
     } catch {
-      // Ignore storage cleanup error
+      return { success: false, message: 'Cannot reach the security service. Check your internet connection and retry.' };
     }
+  };
+
+  const logoutAdmin = async () => {
+    try {
+      const raw = window.sessionStorage.getItem(ADMIN_SESSION_KEY);
+      const session = raw ? JSON.parse(raw) : null;
+      if (session?.token) await fetch(`${API_BASE}/logout`, { method: 'POST', headers: { Authorization: `Bearer ${session.token}` }, signal: AbortSignal.timeout(8000) });
+    } catch {
+      // Local sign-out still completes if the API is unavailable.
+    }
+    try { window.sessionStorage.removeItem(ADMIN_SESSION_KEY); } catch { /* Ignore storage cleanup failures. */ }
     setIsAdminAuthenticated(false);
     setUserRoleState('customer');
+    setCurrentPage('home');
+    if (typeof window !== 'undefined') window.history.pushState({}, '', '/');
   };
 
   const setActiveCurrency = (code: CurrencyCode) => {
@@ -519,17 +557,49 @@ export const TradeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }
   };
 
-  // Product CRUD
-  const saveProduct = (product: Product) => {
-    TradeStorageService.saveProduct(product);
-    setProducts(TradeStorageService.getProducts());
+  // Product CRUD — authoritative writes go to Cloudflare D1.
+  const getAdminToken = (): string => {
+    try {
+      const raw = window.sessionStorage.getItem(ADMIN_SESSION_KEY);
+      return raw ? JSON.parse(raw)?.token || '' : '';
+    } catch { return ''; }
+  };
+
+  const saveProduct = async (product: Product): Promise<void> => {
+    const token = getAdminToken();
+    if (!token) throw new Error('Your admin session has expired. Please sign in again.');
+    const categoryId = categories.find((category) => category.name === product.category)?.id || null;
+    const response = await fetch(`${API_BASE}/admin/products`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({
+        ...product, category_id: categoryId, supplier_id: null,
+        price_usd: product.salePriceUSD ?? product.regularPriceUSD,
+        stock_quantity: product.stock, image_key: null,
+      }),
+      signal: AbortSignal.timeout(15000),
+    });
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(payload.error || 'Product could not be saved.');
+    const refresh = await fetch(`${API_BASE}/admin/products`, { headers: { Authorization: `Bearer ${token}` }, signal: AbortSignal.timeout(12000) });
+    if (!refresh.ok) throw new Error('Product saved, but the catalogue refresh failed. Reload the admin panel.');
+    const result = await refresh.json();
+    const updated = (result.data || []).map((row: any) => {
+      try { return typeof row.data_json === 'string' ? JSON.parse(row.data_json) : row.data_json || row; } catch { return row; }
+    }).filter((item: Product) => Boolean(item && item.id));
+    setProducts(updated);
+    try { localStorage.setItem('catify_products', JSON.stringify(updated)); } catch { /* API remains source of truth. */ }
     setAdminLogs(TradeStorageService.getLogs());
   };
 
-  const deleteProduct = (id: string) => {
-    TradeStorageService.deleteProduct(id);
-    setProducts(TradeStorageService.getProducts());
-    setAdminLogs(TradeStorageService.getLogs());
+  const deleteProduct = async (id: string): Promise<void> => {
+    const token = getAdminToken();
+    if (!token) throw new Error('Your admin session has expired. Please sign in again.');
+    const response = await fetch(`${API_BASE}/admin/products/${encodeURIComponent(id)}`, {
+      method: 'DELETE', headers: { Authorization: `Bearer ${token}` }, signal: AbortSignal.timeout(12000),
+    });
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(payload.error || 'Product could not be deleted.');
+    setProducts((current) => current.filter((product) => product.id !== id));
   };
 
   // Cart Management
@@ -941,6 +1011,8 @@ export const TradeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         setUserRole,
         isAdminAuthenticated,
         loginAdmin,
+        initializeAdmin,
+        isAdminSetupRequired,
         logoutAdmin,
         searchQuery,
         setSearchQuery,
