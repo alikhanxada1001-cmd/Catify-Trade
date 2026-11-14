@@ -56,10 +56,10 @@ export const WholesalePage: React.FC = () => {
             <span>Dedicated B2B Trade &amp; Bulk Purchasing Hub</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white leading-tight">
-            Wholesale Sourcing with <span className="text-gold-gradient">Tiered Factory Pricing</span>
+            Wholesale Product Enquiries with <span className="text-gold-gradient">Indicative Tier Pricing</span>
           </h1>
           <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-            Order palletized stock, custom OEM production runs, and Full Container Loads (FCL). Direct supply agreements, certified pre-shipment inspections, and international SWIFT wire terms.
+            Share your target quantity, customization needs and destination to request a wholesale quotation. Supplier availability, product details, final prices and delivery terms must be confirmed before ordering.
           </p>
 
           <div className="pt-2 flex items-center gap-3 flex-wrap">
@@ -74,7 +74,7 @@ export const WholesalePage: React.FC = () => {
               onClick={() => navigateTo('suppliers')}
               className="px-4 py-2.5 bg-slate-800/80 hover:bg-slate-800 text-white font-semibold text-xs rounded-xl border border-slate-700 transition-colors"
             >
-              Explore Audited Factories
+              View Supplier Directory
             </button>
           </div>
         </div>
@@ -87,11 +87,12 @@ export const WholesalePage: React.FC = () => {
             <Calculator className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-base sm:text-lg font-bold text-slate-900">Interactive Bulk Savings Calculator</h2>
-            <p className="text-xs text-slate-500">Estimate tiered purchase price, total savings, and freight capacity in real-time</p>
+            <h2 className="text-base sm:text-lg font-bold text-slate-900">Indicative Bulk Price Estimator</h2>
+            <p className="text-xs text-slate-500">Explore sample tier pricing only. It is not a live supplier offer or final quotation.</p>
           </div>
         </div>
 
+        <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs leading-relaxed text-amber-900">Sample catalogue prices and discount tiers are illustrative. They do not confirm stock, supplier capacity, shipping cost or a binding offer.</div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
           {/* Select Product */}
           <div>
