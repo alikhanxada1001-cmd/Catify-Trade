@@ -226,6 +226,8 @@ export const ImportServicesPage: React.FC = () => {
                 <label className="block text-xs font-semibold text-slate-700 mb-1">Cargo Description &amp; Specifics</label>
                 <textarea
                   rows={3}
+                  required
+                  minLength={10}
                   value={cargoDetails}
                   onChange={(e) => setCargoDetails(e.target.value)}
                   placeholder="Describe goods, estimated weight, value for customs declaration, or known HS codes..."
