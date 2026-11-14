@@ -587,6 +587,7 @@ export const AdminDashboardPage: React.FC = () => {
           <h2 className="text-sm font-bold text-slate-900 uppercase tracking-wider">
             Import / Export Trade Inquiries
           </h2>
+          {rfqActionError && <div role="alert" className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-xs text-rose-700">{rfqActionError}</div>}
 
           <div className="space-y-3">
             {inquiries.map((inq) => (
@@ -595,9 +596,17 @@ export const AdminDashboardPage: React.FC = () => {
                   <div className="font-bold text-slate-900">
                     {inq.companyName} ({inq.contactPerson}) · <span className="text-blue-900 capitalize">{inq.serviceType.replace('_', ' ')}</span>
                   </div>
-                  <span className="px-2 py-0.5 rounded bg-slate-100 font-bold text-[10px] uppercase self-start sm:self-auto">
-                    Status: {inq.status}
-                  </span>
+                  <select
+                    aria-label={`Update status for inquiry from ${inq.companyName}`}
+                    value={inq.status}
+                    onChange={(e) => void updateInquiry({ ...inq, status: e.target.value as TradeInquiry['status'] }).catch((error) => setRfqActionError(error instanceof Error ? error.message : 'Inquiry status could not be updated.'))}
+                    className="rounded-lg border border-slate-200 bg-white px-2 py-1 text-[10px] font-bold uppercase text-slate-700"
+                  >
+                    <option value="new">New</option>
+                    <option value="contacted">Contacted</option>
+                    <option value="proposal_sent">Proposal sent</option>
+                    <option value="closed">Closed</option>
+                  </select>
                 </div>
 
                 <div className="text-slate-600 break-words">
