@@ -67,6 +67,8 @@ export const AdminDashboardPage: React.FC = () => {
   // Product Add / Edit Modal state
   const [editingProduct, setEditingProduct] = useState<Partial<Product> | null>(null);
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
+  const [productActionError, setProductActionError] = useState('');
+  const [isProductSaving, setIsProductSaving] = useState(false);
 
   // Order Update Modal state
   const [editingOrder, setEditingOrder] = useState<Order | null>(null);
@@ -93,6 +95,7 @@ export const AdminDashboardPage: React.FC = () => {
   const pendingRFQsCount = rfqs.filter((r) => r.status === 'pending').length;
 
   const handleOpenNewProduct = () => {
+    setProductActionError('');
     setEditingProduct({
       id: `prod-custom-${Date.now()}`,
       title: '',
@@ -131,19 +134,22 @@ export const AdminDashboardPage: React.FC = () => {
     setIsProductModalOpen(true);
   };
 
-  const handleSaveProduct = (e: React.FormEvent) => {
+  const handleSaveProduct = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!editingProduct?.title || !editingProduct?.sku) return;
-
+    if (!editingProduct?.title || !editingProduct?.sku || isProductSaving) return;
     const slug = editingProduct.slug || editingProduct.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-    const completeProduct: Product = {
-      ...(editingProduct as Product),
-      slug,
-    };
-
-    saveProduct(completeProduct);
-    setIsProductModalOpen(false);
-    setEditingProduct(null);
+    const completeProduct: Product = { ...(editingProduct as Product), slug };
+    setIsProductSaving(true);
+    setProductActionError('');
+    try {
+      await saveProduct(completeProduct);
+      setIsProductModalOpen(false);
+      setEditingProduct(null);
+    } catch (error) {
+      setProductActionError(error instanceof Error ? error.message : 'Product could not be saved. Please retry.');
+    } finally {
+      setIsProductSaving(false);
+    }
   };
 
   const handleSaveOrderUpdate = (e: React.FormEvent) => {
@@ -439,6 +445,7 @@ export const AdminDashboardPage: React.FC = () => {
                       <div className="flex items-center justify-end gap-2">
                         <button
                           onClick={() => {
+                            setProductActionError('');
                             setEditingProduct(p);
                             setIsProductModalOpen(true);
                           }}
@@ -450,7 +457,7 @@ export const AdminDashboardPage: React.FC = () => {
                         <button
                           onClick={() => {
                             if (window.confirm(`Delete "${p.title}"?`)) {
-                              deleteProduct(p.id);
+                              void deleteProduct(p.id).catch((error) => setProductActionError(error instanceof Error ? error.message : 'Product could not be deleted.'));
                             }
                           }}
                           className="p-1 text-slate-500 hover:text-rose-600 transition-colors"
@@ -778,6 +785,7 @@ export const AdminDashboardPage: React.FC = () => {
             </div>
 
             <form onSubmit={handleSaveProduct} className="p-4 sm:p-6 space-y-4 text-xs overflow-y-auto flex-1 min-h-0">
+              {productActionError && <div role="alert" className="rounded-xl border border-rose-200 bg-rose-50 px-3 py-2.5 text-rose-700 font-medium">{productActionError}</div>}
               <div>
                 <label className="block font-semibold text-slate-700 mb-1">Product Title *</label>
                 <input
