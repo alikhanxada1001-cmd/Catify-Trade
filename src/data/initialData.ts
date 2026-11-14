@@ -174,72 +174,72 @@ export const INITIAL_PRODUCTS: Product[] = [
     category: 'Jackets & Outerwear', subcategory: 'Casual Jackets', shortDescription: 'Lightweight everyday bomber jacket with a clean modern fit.',
     description: 'Demo catalogue listing for a versatile bomber jacket. Soft inner lining, ribbed cuffs and hem, front zip closure and practical side pockets. Available in multiple colours and sizes.',
     images: ['https://images.unsplash.com/photo-1551028719-00167b16eac5?w=1200'], countryOfOrigin: 'Pakistan', manufacturingDetails: 'Sample product listing — supplier details to be confirmed.',
-    regularPriceUSD: 39, salePriceUSD: 32, wholesalePriceUSD: 24, moq: 5, maxOrderQuantity: 500, stock: 120, weightKg: 0.75,
+    regularPriceUSD: 39, salePriceUSD: 32, wholesalePriceUSD: 24, moq: 5, maxOrderQuantity: 500, stock: 0, weightKg: 0.75,
     dimensionsCm: { length: 35, width: 28, height: 5 }, status: 'published', isFeatured: true, isWholesaleOnly: false, isNewArrival: true, isBestSeller: false,
     wholesaleTiers: [{ minQty: 5, maxQty: 24, unitPriceUSD: 27, discountPercent: 15 }, { minQty: 25, maxQty: null, unitPriceUSD: 24, discountPercent: 25 }],
     specifications: { Material: 'Polyester blend', Closure: 'Front zipper', Fit: 'Regular', Season: 'All season' }, shippingAvailability: ['ALL'],
     variations: { colors: ['Black', 'Olive', 'Navy'], sizes: ['S', 'M', 'L', 'XL', 'XXL'] },
-    supplierId: 'sup-indus-textiles', supplierName: 'Indus Valley Heritage Mills (sample listing)', rating: 4.7, reviewsCount: 12
+    supplierId: 'sup-indus-textiles', supplierName: 'Indus Valley Heritage Mills (sample listing)', rating: 0, reviewsCount: 0
   },
   {
     id: 'demo-jacket-002', title: 'Water-Resistant Outdoor Jacket', slug: 'water-resistant-outdoor-jacket', sku: 'CT-JKT-002', hsCode: '6201.40',
     category: 'Jackets & Outerwear', subcategory: 'Outdoor Jackets', shortDescription: 'Practical lightweight shell jacket for travel and outdoor use.',
     description: 'Demo product with a water-resistant outer shell, adjustable hood, zip pockets and comfortable lining. Ideal for casual outdoor wear.',
     images: ['https://images.unsplash.com/photo-1544923246-77307dd654cb?w=1200'], countryOfOrigin: 'Pakistan', manufacturingDetails: 'Sample product listing — specifications subject to supplier confirmation.',
-    regularPriceUSD: 54, salePriceUSD: 47, wholesalePriceUSD: 36, moq: 5, maxOrderQuantity: 400, stock: 85, weightKg: 0.9,
+    regularPriceUSD: 54, salePriceUSD: 47, wholesalePriceUSD: 36, moq: 5, maxOrderQuantity: 400, stock: 0, weightKg: 0.9,
     dimensionsCm: { length: 38, width: 30, height: 6 }, status: 'published', isFeatured: true, isWholesaleOnly: false, isNewArrival: true, isBestSeller: false,
     wholesaleTiers: [{ minQty: 5, maxQty: 24, unitPriceUSD: 40, discountPercent: 15 }, { minQty: 25, maxQty: null, unitPriceUSD: 36, discountPercent: 25 }],
     specifications: { Material: 'Polyester shell', Feature: 'Water-resistant finish', Hood: 'Adjustable', Pockets: 'Two zip pockets' }, shippingAvailability: ['ALL'],
     variations: { colors: ['Black', 'Grey', 'Blue'], sizes: ['S', 'M', 'L', 'XL'] },
-    supplierId: 'sup-indus-textiles', supplierName: 'Indus Valley Heritage Mills (sample listing)', rating: 4.6, reviewsCount: 8
+    supplierId: 'sup-indus-textiles', supplierName: 'Indus Valley Heritage Mills (sample listing)', rating: 0, reviewsCount: 0
   },
   {
     id: 'demo-gloves-001', title: 'Everyday Knit Winter Gloves', slug: 'everyday-knit-winter-gloves', sku: 'CT-GLV-001', hsCode: '6116.93',
     category: 'Gloves', subcategory: 'Winter Gloves', shortDescription: 'Soft stretch-knit gloves for comfortable everyday warmth.',
     description: 'Demo catalogue listing for soft knitted gloves with a flexible fit and warm feel. Suitable for daily commuting and winter use.',
     images: ['https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=1200'], countryOfOrigin: 'Pakistan', manufacturingDetails: 'Sample product listing — supplier details to be confirmed.',
-    regularPriceUSD: 12, salePriceUSD: 9, wholesalePriceUSD: 6.5, moq: 10, maxOrderQuantity: 2000, stock: 600, weightKg: 0.12,
+    regularPriceUSD: 12, salePriceUSD: 9, wholesalePriceUSD: 6.5, moq: 10, maxOrderQuantity: 2000, stock: 0, weightKg: 0.12,
     dimensionsCm: { length: 22, width: 12, height: 2 }, status: 'published', isFeatured: true, isWholesaleOnly: false, isNewArrival: false, isBestSeller: true,
     wholesaleTiers: [{ minQty: 10, maxQty: 49, unitPriceUSD: 7.5, discountPercent: 15 }, { minQty: 50, maxQty: null, unitPriceUSD: 6.5, discountPercent: 25 }],
     specifications: { Material: 'Acrylic knit', Style: 'Unisex', Season: 'Winter' }, shippingAvailability: ['ALL'],
     variations: { colors: ['Black', 'Grey', 'Cream'], sizes: ['One Size'] },
-    supplierId: 'sup-indus-textiles', supplierName: 'Indus Valley Heritage Mills (sample listing)', rating: 4.8, reviewsCount: 19
+    supplierId: 'sup-indus-textiles', supplierName: 'Indus Valley Heritage Mills (sample listing)', rating: 0, reviewsCount: 0
   },
   {
     id: 'demo-shoes-001', title: 'Everyday Running Sneakers', slug: 'everyday-running-sneakers', sku: 'CT-SHO-001', hsCode: '6404.11',
     category: 'Shoes & Footwear', subcategory: 'Sneakers', shortDescription: 'Lightweight casual sneakers with cushioned soles.',
     description: 'Demo listing for versatile everyday sneakers featuring a breathable upper, padded collar and flexible rubber outsole. Great for casual wear and light activity.',
     images: ['https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=1200'], countryOfOrigin: 'Pakistan', manufacturingDetails: 'Sample product listing — supplier details to be confirmed.',
-    regularPriceUSD: 49, salePriceUSD: 42, wholesalePriceUSD: 31, moq: 5, maxOrderQuantity: 500, stock: 160, weightKg: 0.8,
+    regularPriceUSD: 49, salePriceUSD: 42, wholesalePriceUSD: 31, moq: 5, maxOrderQuantity: 500, stock: 0, weightKg: 0.8,
     dimensionsCm: { length: 32, width: 20, height: 12 }, status: 'published', isFeatured: true, isWholesaleOnly: false, isNewArrival: true, isBestSeller: true,
     wholesaleTiers: [{ minQty: 5, maxQty: 24, unitPriceUSD: 36, discountPercent: 15 }, { minQty: 25, maxQty: null, unitPriceUSD: 31, discountPercent: 25 }],
     specifications: { Upper: 'Breathable textile', Sole: 'Rubber', Use: 'Casual / light running' }, shippingAvailability: ['ALL'],
     variations: { colors: ['White/Red', 'Black', 'Grey'], sizes: ['39', '40', '41', '42', '43', '44', '45'] },
-    supplierId: 'sup-indus-textiles', supplierName: 'Indus Valley Heritage Mills (sample listing)', rating: 4.7, reviewsCount: 27
+    supplierId: 'sup-indus-textiles', supplierName: 'Indus Valley Heritage Mills (sample listing)', rating: 0, reviewsCount: 0
   },
   {
     id: 'demo-shoes-002', title: 'Minimal Classic White Sneakers', slug: 'minimal-classic-white-sneakers', sku: 'CT-SHO-002', hsCode: '6404.19',
     category: 'Shoes & Footwear', subcategory: 'Casual Shoes', shortDescription: 'Clean low-top sneakers for daily casual outfits.',
     description: 'Demo listing featuring a simple low-top silhouette, lace-up fastening and durable outsole. Neutral styling for everyday use.',
     images: ['https://images.unsplash.com/photo-1549298916-b41d501d3772?w=1200'], countryOfOrigin: 'Pakistan', manufacturingDetails: 'Sample product listing — supplier details to be confirmed.',
-    regularPriceUSD: 44, salePriceUSD: 38, wholesalePriceUSD: 28, moq: 5, maxOrderQuantity: 500, stock: 95, weightKg: 0.78,
+    regularPriceUSD: 44, salePriceUSD: 38, wholesalePriceUSD: 28, moq: 5, maxOrderQuantity: 500, stock: 0, weightKg: 0.78,
     dimensionsCm: { length: 32, width: 20, height: 12 }, status: 'published', isFeatured: false, isWholesaleOnly: false, isNewArrival: true, isBestSeller: false,
     wholesaleTiers: [{ minQty: 5, maxQty: 24, unitPriceUSD: 33, discountPercent: 15 }, { minQty: 25, maxQty: null, unitPriceUSD: 28, discountPercent: 25 }],
     specifications: { Upper: 'Synthetic leather', Closure: 'Laces', Sole: 'Rubber' }, shippingAvailability: ['ALL'],
     variations: { colors: ['White', 'Off White'], sizes: ['39', '40', '41', '42', '43', '44'] },
-    supplierId: 'sup-indus-textiles', supplierName: 'Indus Valley Heritage Mills (sample listing)', rating: 4.5, reviewsCount: 6
+    supplierId: 'sup-indus-textiles', supplierName: 'Indus Valley Heritage Mills (sample listing)', rating: 0, reviewsCount: 0
   },
   {
     id: 'demo-cap-001', title: 'Adjustable Everyday Baseball Cap', slug: 'adjustable-everyday-baseball-cap', sku: 'CT-CAP-001', hsCode: '6505.00',
     category: 'Caps & Accessories', subcategory: 'Caps', shortDescription: 'Classic six-panel cap with an adjustable rear strap.',
     description: 'Demo catalogue listing for a lightweight everyday baseball cap with curved brim, stitched eyelets and an adjustable closure.',
     images: ['https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=1200'], countryOfOrigin: 'Pakistan', manufacturingDetails: 'Sample product listing — supplier details to be confirmed.',
-    regularPriceUSD: 16, salePriceUSD: 13, wholesalePriceUSD: 8, moq: 10, maxOrderQuantity: 1500, stock: 420, weightKg: 0.11,
+    regularPriceUSD: 16, salePriceUSD: 13, wholesalePriceUSD: 8, moq: 10, maxOrderQuantity: 1500, stock: 0, weightKg: 0.11,
     dimensionsCm: { length: 22, width: 20, height: 12 }, status: 'published', isFeatured: true, isWholesaleOnly: false, isNewArrival: false, isBestSeller: true,
     wholesaleTiers: [{ minQty: 10, maxQty: 49, unitPriceUSD: 10, discountPercent: 15 }, { minQty: 50, maxQty: null, unitPriceUSD: 8, discountPercent: 25 }],
     specifications: { Material: 'Cotton twill', Panels: 'Six panel', Closure: 'Adjustable strap' }, shippingAvailability: ['ALL'],
     variations: { colors: ['Black', 'Navy', 'Beige', 'White'], sizes: ['Adjustable'] },
-    supplierId: 'sup-indus-textiles', supplierName: 'Indus Valley Heritage Mills (sample listing)', rating: 4.8, reviewsCount: 14
+    supplierId: 'sup-indus-textiles', supplierName: 'Indus Valley Heritage Mills (sample listing)', rating: 0, reviewsCount: 0
   }
 ];
 
