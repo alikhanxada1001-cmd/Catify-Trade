@@ -19,18 +19,13 @@ export const AdminLoginPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isSubmitting) return;
     setErrorMessage('');
     if (isAdminSetupRequired && password.length < 12) {
-      setErrorMessage('Create a password with at least 12 characters.');
-      return;
-    }
-    if (isAdminSetupRequired && password !== confirmPassword) {
-      setErrorMessage('Passwords do not match.');
+      setErrorMessage('Use a password with at least 12 characters.');
       return;
     }
     setIsSubmitting(true);
@@ -43,7 +38,6 @@ export const AdminLoginPage: React.FC = () => {
         return;
       }
       setPassword('');
-      setConfirmPassword('');
     } finally {
       setIsSubmitting(false);
     }
@@ -88,7 +82,7 @@ export const AdminLoginPage: React.FC = () => {
                 Catify Trade Console
               </h1>
               <p className="text-xs text-slate-400 mt-1">
-                {isAdminSetupRequired ? 'Create the first administrator account to secure this dashboard.' : 'Sign in to manage products, orders, RFQs, and settings.'}
+                {isAdminSetupRequired ? 'Enter your administrator email and password to activate secure access.' : 'Sign in to manage products, orders, RFQs, and settings.'}
               </p>
             </div>
           </div>
@@ -153,23 +147,7 @@ export const AdminLoginPage: React.FC = () => {
               </div>
             </div>
 
-            {isAdminSetupRequired && (
-              <div className="space-y-1.5">
-                <label htmlFor="admin-confirm-password" className="block text-xs font-bold text-slate-700">Confirm Password</label>
-                <input
-                  id="admin-confirm-password"
-                  type={showPassword ? 'text' : 'password'}
-                  required
-                  autoComplete="new-password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="Re-enter your password"
-                  disabled={isSubmitting}
-                  className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-950 focus:bg-white disabled:opacity-60"
-                />
-                <p className="text-[11px] text-slate-500">Use 12 or more characters. This setup can only be completed once.</p>
-              </div>
-            )}
+
 
             <button
               type="submit"
