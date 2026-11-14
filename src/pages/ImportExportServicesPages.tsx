@@ -50,13 +50,13 @@ export const ImportServicesPage: React.FC = () => {
         <div className="max-w-2xl space-y-4">
           <div className="flex items-center gap-2 text-xs font-semibold text-amber-400 uppercase tracking-wider">
             <Ship className="w-4 h-4" />
-            <span>Port Clearance &amp; Brokerage Solutions</span>
+            <span>Import Planning &amp; Documentation</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
             International Import &amp; Customs Services
           </h1>
           <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-            Eliminate port delays and demurrage penalties. Catify Trade handles tariff determination, bonded warehousing, import declaration filings, and door-to-door container logistics.
+            Share your route, product classification and cargo details to discuss documentation requirements and possible logistics options. Licensed customs brokers remain responsible for formal declarations and clearance.
           </p>
         </div>
       </div>
@@ -67,9 +67,9 @@ export const ImportServicesPage: React.FC = () => {
           <div className="p-3 rounded-xl bg-blue-50 text-blue-900 w-fit">
             <FileText className="w-5 h-5" />
           </div>
-          <h3 className="text-sm font-bold text-slate-900">Customs Brokerage</h3>
+          <h3 className="text-sm font-bold text-slate-900">Customs Documentation Checklist</h3>
           <p className="text-xs text-slate-600 leading-relaxed">
-            Accurate HS code classification and electronic filing with US CBP, EU ATLAS, HMRC, and GCC customs portals.
+            Identify product details and documents to review with a qualified customs broker in the destination country.
           </p>
         </div>
 
@@ -77,9 +77,9 @@ export const ImportServicesPage: React.FC = () => {
           <div className="p-3 rounded-xl bg-amber-50 text-amber-700 w-fit">
             <Ship className="w-5 h-5" />
           </div>
-          <h3 className="text-sm font-bold text-slate-900">Ocean Drayage &amp; Port Pickup</h3>
+          <h3 className="text-sm font-bold text-slate-900">Port and Freight Planning</h3>
           <p className="text-xs text-slate-600 leading-relaxed">
-            Coordinated terminal discharge, wharfage clearance, and chassis haulage from marine terminals to bonded warehouses.
+            Compare route, shipment size and destination requirements before requesting a freight quotation.
           </p>
         </div>
 
@@ -87,9 +87,9 @@ export const ImportServicesPage: React.FC = () => {
           <div className="p-3 rounded-xl bg-emerald-50 text-emerald-700 w-fit">
             <ShieldCheck className="w-5 h-5" />
           </div>
-          <h3 className="text-sm font-bold text-slate-900">Tariff Optimization</h3>
+          <h3 className="text-sm font-bold text-slate-900">Duty and Tax Research</h3>
           <p className="text-xs text-slate-600 leading-relaxed">
-            Utilization of Free Trade Agreements (FTAs), GSP preferences, and duty drawback recovery programs.
+            Import duties depend on local law and product classification. Confirm current rates with the destination customs authority or a licensed broker.
           </p>
         </div>
 
@@ -97,9 +97,9 @@ export const ImportServicesPage: React.FC = () => {
           <div className="p-3 rounded-xl bg-purple-50 text-purple-700 w-fit">
             <Truck className="w-5 h-5" />
           </div>
-          <h3 className="text-sm font-bold text-slate-900">Final Mile Cargo Delivery</h3>
+          <h3 className="text-sm font-bold text-slate-900">Delivery Options</h3>
           <p className="text-xs text-slate-600 leading-relaxed">
-            Full truckload (FTL) and LTL lift-gate delivery directly to your regional fulfillment or manufacturing facilities.
+            Depending on the route, courier, road, air or sea options may be available. Costs and service must be confirmed in writing.
           </p>
         </div>
       </div>
@@ -108,9 +108,9 @@ export const ImportServicesPage: React.FC = () => {
       <div className="bg-slate-50 border border-slate-200 rounded-3xl p-4 sm:p-6 lg:p-10">
         <div className="max-w-2xl mx-auto space-y-6">
           <div className="text-center space-y-2">
-            <h2 className="text-xl sm:text-2xl font-bold text-slate-900">Book Import Clearance &amp; Freight Consultation</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-slate-900">Request Import Information</h2>
             <p className="text-xs sm:text-sm text-slate-500">
-              Submit your cargo specifications for a detailed landed cost breakdown and port clearance timeline.
+              Share your cargo details. Any available assistance, costs and timelines will be confirmed after review.
             </p>
           </div>
 
@@ -288,7 +288,7 @@ export const ExportServicesPage: React.FC = () => {
             Worldwide Export Compliance &amp; Freight Logistics
           </h1>
           <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-            Expand your manufacturing distribution to 160+ countries. Catify Trade coordinates ocean container allocations, air cargo chartering, export licenses, Chamber Certificates of Origin, and export packing.
+            Tell us your origin, destination and product details to discuss potential export documentation and shipping requirements. Availability is confirmed case by case.
           </p>
         </div>
       </div>
@@ -296,21 +296,21 @@ export const ExportServicesPage: React.FC = () => {
       {/* Export Services Features */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="p-6 rounded-2xl border border-slate-200 bg-white space-y-3">
-          <h3 className="text-base font-bold text-slate-900">Trade Documentation Management</h3>
+          <h3 className="text-base font-bold text-slate-900">Export Document Checklist</h3>
           <p className="text-xs text-slate-600 leading-relaxed">
             Issuance of compliant Commercial Invoices, Packing Lists, Shipper&apos;s Letter of Instruction (SLI), and Certificates of Origin attested by local Chambers of Commerce.
           </p>
         </div>
         <div className="p-6 rounded-2xl border border-slate-200 bg-white space-y-3">
-          <h3 className="text-base font-bold text-slate-900">Container Freight Station (CFS) Stowing</h3>
+          <h3 className="text-base font-bold text-slate-900">Cargo Preparation</h3>
           <p className="text-xs text-slate-600 leading-relaxed">
-            ISPM-15 heat-treated palletization, corner guards, container stuffing plans, and GPS seal verification prior to vessel departure.
+            Confirm packaging, palletization, marking and cargo handling requirements with the supplier and carrier before dispatch.
           </p>
         </div>
         <div className="p-6 rounded-2xl border border-slate-200 bg-white space-y-3">
-          <h3 className="text-base font-bold text-slate-900">Letter of Credit (L/C) Compliance</h3>
+          <h3 className="text-base font-bold text-slate-900">Payment Document Review</h3>
           <p className="text-xs text-slate-600 leading-relaxed">
-            Zero-discrepancy document presentation under UCP 600 standards, ensuring swift bank authorization and irrevocable payment release.
+            Discuss documentary requirements with your bank and trade finance adviser. Catify Trade does not process letters of credit or payments.
           </p>
         </div>
       </div>
