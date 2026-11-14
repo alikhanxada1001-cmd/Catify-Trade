@@ -433,6 +433,14 @@ export const TradeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         }).filter((product: Product) => Boolean(product && product.id));
         setProducts(remoteProducts);
       }
+      const rfqsResponse = await fetch(`${API_BASE}/admin/rfqs`, { headers: { Authorization: `Bearer ${payload.token}` }, signal: AbortSignal.timeout(12000) });
+      if (rfqsResponse.ok) {
+        const rfqsPayload = await rfqsResponse.json();
+        const remoteRFQs = (rfqsPayload.data || []).map((row: any) => {
+          try { return typeof row.data_json === 'string' ? JSON.parse(row.data_json) : row.data_json || row; } catch { return row; }
+        }).filter((item: RFQ) => Boolean(item && item.id));
+        setRFQs(remoteRFQs);
+      }
       if (typeof window !== 'undefined' && parseUrlRoute(window.location.pathname).page !== 'admin-dashboard') window.history.pushState({}, '', '/admin');
       return { success: true, message: 'Signed in successfully.' };
     } catch {
