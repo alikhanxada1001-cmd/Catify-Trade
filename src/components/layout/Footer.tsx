@@ -59,7 +59,7 @@ export const Footer: React.FC = () => {
                 <FileText className="w-5 h-5" />
               </div>
               <div>
-                <h4 className="font-semibold text-white text-sm mb-0.5">Customs Compliance</h4>
+                <h4 className="font-semibold text-white text-sm mb-0.5">Customs Information</h4>
                 <p className="text-slate-400">Confirm customs and document requirements with the relevant authority or a licensed broker.</p>
               </div>
             </div>
@@ -237,11 +237,8 @@ export const Footer: React.FC = () => {
         {/* Accepted Payment & Settlement Methods Strip */}
         <div className="mt-12 pt-8 border-t border-slate-900 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <div className="flex items-center gap-3 flex-wrap justify-center">
-            <span className="font-semibold text-slate-400">Settlement Gateways:</span>
-            <span className="px-2 py-1 rounded bg-slate-900 text-slate-300 border border-slate-800">SWIFT Bank Wire / T/T</span>
-            <span className="px-2 py-1 rounded bg-slate-900 text-slate-300 border border-slate-800">Letter of Credit (L/C)</span>
-            <span className="px-2 py-1 rounded bg-slate-900 text-slate-300 border border-slate-800">Visa / Mastercard / Amex</span>
-            <span className="px-2 py-1 rounded bg-slate-900 text-slate-300 border border-slate-800">PayPal International</span>
+            <span className="font-semibold text-slate-400">Payment status:</span>
+            <span className="px-2 py-1 rounded bg-slate-900 text-slate-300 border border-slate-800">No online payment gateway connected</span>
           </div>
 
           <div className="flex items-center gap-4 text-slate-500">
