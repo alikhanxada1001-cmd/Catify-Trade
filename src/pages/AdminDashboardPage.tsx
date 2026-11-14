@@ -37,6 +37,7 @@ export const AdminDashboardPage: React.FC = () => {
     products,
     saveProduct,
     deleteProduct,
+    uploadProductImage,
     orders,
     updateOrder,
     rfqs,
@@ -69,6 +70,7 @@ export const AdminDashboardPage: React.FC = () => {
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
   const [productActionError, setProductActionError] = useState('');
   const [isProductSaving, setIsProductSaving] = useState(false);
+  const [isImageUploading, setIsImageUploading] = useState(false);
   const [rfqActionError, setRfqActionError] = useState('');
 
   // Order Update Modal state
@@ -107,7 +109,7 @@ export const AdminDashboardPage: React.FC = () => {
       subcategory: 'General Trade',
       shortDescription: '',
       description: '',
-      images: ['/src/assets/images/trade_industrial_machinery_1794500846265.jpg'],
+      images: [],
       countryOfOrigin: 'Germany',
       manufacturingDetails: 'Certified ISO 9001 Partner Plant',
       regularPriceUSD: 100,
@@ -877,6 +879,43 @@ export const AdminDashboardPage: React.FC = () => {
                     className="w-full px-3 py-2 border border-slate-300 rounded-lg"
                   />
                 </div>
+              </div>
+
+              <div className="space-y-2">
+                <label className="block font-semibold text-slate-700 mb-1">Product Images (R2 storage)</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  disabled={isImageUploading || isProductSaving}
+                  onChange={async (event) => {
+                    const file = event.target.files?.[0];
+                    if (!file) return;
+                    setProductActionError('');
+                    setIsImageUploading(true);
+                    try {
+                      const imageUrl = await uploadProductImage(file);
+                      setEditingProduct((current) => current ? { ...current, images: [...(current.images || []), imageUrl] } : current);
+                    } catch (error) {
+                      setProductActionError(error instanceof Error ? error.message : 'Image upload failed.');
+                    } finally {
+                      setIsImageUploading(false);
+                      event.target.value = '';
+                    }
+                  }}
+                  className="block w-full text-xs text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-blue-50 file:px-3 file:py-2 file:font-semibold file:text-blue-900 hover:file:bg-blue-100"
+                />
+                {isImageUploading && <p className="text-xs text-blue-700">Uploading image securely to Cloudflare R2…</p>}
+                {!!editingProduct.images?.length && (
+                  <div className="flex flex-wrap gap-2">
+                    {editingProduct.images.map((image, index) => (
+                      <div key={image + index} className="relative">
+                        <img src={image} alt={`Product image ${index + 1}`} className="h-20 w-20 rounded-lg border border-slate-200 object-cover" />
+                        <button type="button" onClick={() => setEditingProduct({ ...editingProduct, images: (editingProduct.images || []).filter((_, imageIndex) => imageIndex !== index) })} className="absolute -right-1 -top-1 rounded-full bg-rose-600 px-1.5 py-0.5 text-white" aria-label="Remove image">×</button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <p className="text-[11px] text-slate-500">JPG, PNG, WebP or other image formats · Maximum 8 MB per image.</p>
               </div>
 
               <div>
