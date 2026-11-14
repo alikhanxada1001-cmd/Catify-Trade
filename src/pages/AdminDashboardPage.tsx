@@ -69,6 +69,7 @@ export const AdminDashboardPage: React.FC = () => {
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
   const [productActionError, setProductActionError] = useState('');
   const [isProductSaving, setIsProductSaving] = useState(false);
+  const [rfqActionError, setRfqActionError] = useState('');
 
   // Order Update Modal state
   const [editingOrder, setEditingOrder] = useState<Order | null>(null);
@@ -159,18 +160,22 @@ export const AdminDashboardPage: React.FC = () => {
     setEditingOrder(null);
   };
 
-  const handleSaveRFQQuote = (e: React.FormEvent) => {
+  const handleSaveRFQQuote = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingRFQ) return;
-
-    updateRFQ({
-      ...editingRFQ,
-      status: 'quoted',
-      adminQuotedPriceUSD: Number(rfqQuotePrice),
-      adminLeadTimeDays: Number(rfqLeadDays),
-      adminNotes: rfqNotes,
-    });
-    setEditingRFQ(null);
+    setRfqActionError('');
+    try {
+      await updateRFQ({
+        ...editingRFQ,
+        status: 'quoted',
+        adminQuotedPriceUSD: Number(rfqQuotePrice),
+        adminLeadTimeDays: Number(rfqLeadDays),
+        adminNotes: rfqNotes,
+      });
+      setEditingRFQ(null);
+    } catch (error) {
+      setRfqActionError(error instanceof Error ? error.message : 'Could not update this quotation. Please retry.');
+    }
   };
 
   const handleSaveSettings = (e: React.FormEvent) => {
@@ -986,6 +991,7 @@ export const AdminDashboardPage: React.FC = () => {
             </div>
 
             <form onSubmit={handleSaveRFQQuote} className="p-4 sm:p-6 space-y-4 text-xs overflow-y-auto flex-1 min-h-0">
+              {rfqActionError && <div role="alert" className="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-rose-700">{rfqActionError}</div>}
               <div className="text-slate-600">
                 Buyer: <strong>{editingRFQ.buyerName}</strong> ({editingRFQ.buyerCompany})
                 <div>Item: {editingRFQ.productTitle} · Qty: {editingRFQ.quantity}</div>
