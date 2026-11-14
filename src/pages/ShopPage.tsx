@@ -93,7 +93,7 @@ export const ShopPage: React.FC = () => {
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white mt-1">Global Sourcing &amp; Products</h1>
           <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-xl">
-            Browse verified industrial commodities, wholesale textiles, and manufactured systems ready for worldwide export.
+            Explore sample catalogue listings. Product availability, final pricing and supplier details are confirmed after a quotation request.
           </p>
         </div>
 
