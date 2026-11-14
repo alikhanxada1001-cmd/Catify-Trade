@@ -269,23 +269,23 @@ export const FAQsPage: React.FC = () => {
   const faqs = [
     {
       q: 'What are the Minimum Order Quantities (MOQs) on Catify Trade?',
-      a: 'MOQs vary by commodity. Precision CNC and industrial machinery items start as low as 4-5 units, whereas agricultural salts and textile bolts have volume minimums (e.g. 20-50 units) for container freight efficiency. Sample units can also be ordered at standard retail rates.',
+      a: 'The catalogue shows indicative minimum order quantities for sample listings. The actual MOQ depends on the product, supplier, customization and destination, and is confirmed in the written quotation.',
     },
     {
       q: 'Which international payment methods are supported?',
-      a: 'We accept SWIFT MT103 international bank wire transfers (T/T), Irrevocable Letters of Credit (L/C at sight) for wholesale contracts over $5,000, international credit cards (Visa, MasterCard, American Express), and PayPal Business.',
+      a: 'No online payment gateway or escrow service is currently enabled on this website. Do not send money using bank details or payment instructions from an unverified message. Payment terms must be agreed and independently verified before any transaction.',
     },
     {
       q: 'How are customs duties and import taxes calculated?',
-      a: 'Duties depend on your destination country and the specific HS Code (Harmonized Tariff Schedule) of the product. Our platform provides estimated landed customs duty calculations at checkout based on current bilateral tariff schedules.',
+      a: 'Import duties and taxes depend on the destination country's current rules, product classification and declared value. This website does not provide live customs calculations; confirm charges with the relevant customs authority or a licensed broker.',
     },
     {
       q: 'What shipping options do you offer for cross-border cargo?',
-      a: 'We provide Priority Air Cargo Express (7-10 business days) via DHL/FedEx for urgent machinery parts and samples, as well as Ocean Freight LCL (Less-than-Container Load) and FCL (Full Container Load 20ft/40ft) via Tier-1 maritime carriers (Maersk, MSC, Hapag-Lloyd).',
+      a: 'Air freight, courier and sea freight may be options depending on the product, route and shipment size. Carrier availability, transit estimates and costs are not guaranteed and must be confirmed in a written shipping quotation.',
     },
     {
       q: 'How does escrow protection safeguard international buyers?',
-      a: 'Payments are held securely by Catify Trade until the goods pass pre-shipment quality inspection and the Bill of Lading (B/L) or Air Waybill is formally issued and verified against buyer specifications.',
+      a: 'Catify Trade does not currently provide escrow or hold buyer funds. Buyers should use a payment method with appropriate protections and independently verify the supplier, contract, beneficiary and shipping documents before payment.',
     },
   ];
 
@@ -293,7 +293,7 @@ export const FAQsPage: React.FC = () => {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
       <div className="text-center space-y-2">
         <h1 className="text-3xl font-extrabold text-slate-900">Frequently Asked Trade Questions</h1>
-        <p className="text-xs sm:text-sm text-slate-500">Key guidelines regarding Incoterms, customs clearance, and wholesale purchasing</p>
+        <p className="text-xs sm:text-sm text-slate-500">Practical information about product enquiries, shipping estimates and trade terms</p>
       </div>
 
       <div className="space-y-4">
@@ -312,25 +312,18 @@ export const ShippingPolicyPage: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
       <div className="space-y-5 text-xs text-slate-600 leading-relaxed bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-xs">
-        <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900">International Shipping &amp; Logistics Policy</h1>
-        <p>
-          Catify Trade coordinates international commercial freight in strict accordance with Incoterms 2020 rules published by the International Chamber of Commerce (ICC).
-        </p>
-
-        <h3 className="text-sm font-bold text-slate-900 pt-2">1. Maritime Freight (Ocean LCL / FCL)</h3>
-        <p>
-          Ocean consignments are routed through major international container terminals (e.g., Jebel Ali, Hamburg, Rotterdam, Los Angeles, Port Qasim). Cargo is packed on fumigated ISPM-15 wooden pallets with certified container stowage manifests. Typical transit times range from 18 to 32 days depending on oceanic routing.
-        </p>
-
-        <h3 className="text-sm font-bold text-slate-900 pt-2">2. Air Cargo Express Freight</h3>
-        <p>
-          Express shipments under 500kg are dispatched via commercial air freight carriers (DHL Global Forwarding, FedEx International). Transit time is typically 7 to 10 business days excluding unforeseen destination customs holds.
-        </p>
-
-        <h3 className="text-sm font-bold text-slate-900 pt-2">3. Import Customs &amp; Demurrage</h3>
-        <p>
-          Unless Delivered Duty Paid (DDP) is explicitly contracted, the consignee is responsible for destination customs clearance, local port wharfage, and customs duty payments upon arrival.
-        </p>
+        <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900">Shipping &amp; Logistics Information</h1>
+        <p>Shipping is arranged only after the product, supplier, destination, quantity and delivery terms have been reviewed. The website does not currently issue carrier bookings or live freight quotes automatically.</p>
+        <h3 className="text-sm font-bold text-slate-900 pt-2">1. Available shipping methods</h3>
+        <p>Depending on the route and shipment size, a quotation may consider courier, air freight, sea freight (LCL) or full-container freight (FCL). Availability must be confirmed for each request.</p>
+        <h3 className="text-sm font-bold text-slate-900 pt-2">2. Costs and delivery estimates</h3>
+        <p>Freight charges, insurance, handling fees and transit times vary by carrier, route, package dimensions, weight, season and customs processing. Any estimate is indicative until confirmed in writing by the responsible carrier or logistics provider.</p>
+        <h3 className="text-sm font-bold text-slate-900 pt-2">3. Customs and import responsibilities</h3>
+        <p>Import duties, VAT, permits and clearance requirements are determined by the destination country. Unless a signed agreement expressly states otherwise, buyers should confirm local import requirements and charges with their customs authority or licensed customs broker.</p>
+        <h3 className="text-sm font-bold text-slate-900 pt-2">4. Quality checks and documentation</h3>
+        <p>Inspection scope, samples, product certificates, packaging standards and export documents must be agreed before an order is placed. No inspection, certification or shipping service should be assumed unless it is explicitly confirmed in writing.</p>
+        <h3 className="text-sm font-bold text-slate-900 pt-2">5. Request a shipping estimate</h3>
+        <p>Use the quotation form and include the product, quantity, destination city or port, preferred Incoterm and any special handling requirements.</p>
       </div>
     </div>
   );
