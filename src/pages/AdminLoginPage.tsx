@@ -12,45 +12,41 @@ import {
 } from 'lucide-react';
 
 export const AdminLoginPage: React.FC = () => {
-  const { loginAdmin, navigateTo, settings } = useTrade();
+  const { loginAdmin, initializeAdmin, isAdminSetupRequired, navigateTo, settings } = useTrade();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [failedAttempts, setFailedAttempts] = useState(0);
-  const [lockoutSeconds, setLockoutSeconds] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState('');
 
-  useEffect(() => {
-    if (lockoutSeconds <= 0) return;
-    const timer = setInterval(() => {
-      setLockoutSeconds((prev) => (prev <= 1 ? 0 : prev - 1));
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [lockoutSeconds]);
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (lockoutSeconds > 0) return;
-
+    if (isSubmitting) return;
     setErrorMessage('');
-    const result = loginAdmin(username, password);
-
-    if (!result.success) {
-      const nextAttempts = failedAttempts + 1;
-      setFailedAttempts(nextAttempts);
-      if (nextAttempts >= 5) {
-        setLockoutSeconds(30);
-        setFailedAttempts(0);
-        setErrorMessage('Too many failed sign-in attempts. Please wait 30 seconds before trying again.');
-      } else {
-        setErrorMessage(result.message);
-      }
+    if (isAdminSetupRequired && password.length < 12) {
+      setErrorMessage('Create a password with at least 12 characters.');
       return;
     }
-
-    setFailedAttempts(0);
-    setPassword('');
+    if (isAdminSetupRequired && password !== confirmPassword) {
+      setErrorMessage('Passwords do not match.');
+      return;
+    }
+    setIsSubmitting(true);
+    try {
+      const result = isAdminSetupRequired
+        ? await initializeAdmin(username, password)
+        : await loginAdmin(username, password);
+      if (!result.success) {
+        setErrorMessage(result.message);
+        return;
+      }
+      setPassword('');
+      setConfirmPassword('');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -92,7 +88,7 @@ export const AdminLoginPage: React.FC = () => {
                 Catify Trade Console
               </h1>
               <p className="text-xs text-slate-400 mt-1">
-                Sign in with administrator credentials to manage products, orders, RFQs, and settings.
+                {isAdminSetupRequired ? 'Create the first administrator account to secure this dashboard.' : 'Sign in to manage products, orders, RFQs, and settings.'}
               </p>
             </div>
           </div>
@@ -111,19 +107,19 @@ export const AdminLoginPage: React.FC = () => {
 
             <div className="space-y-1.5">
               <label htmlFor="admin-username" className="block text-xs font-bold text-slate-700">
-                Username / Admin Email
+                Administrator Email
               </label>
               <div className="relative">
                 <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
                   id="admin-username"
-                  type="text"
+                  type="email"
                   required
                   autoComplete="username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  placeholder="Enter admin email or username"
-                  disabled={lockoutSeconds > 0}
+                  placeholder="admin@yourcompany.com"
+                  disabled={isSubmitting}
                   className="w-full pl-10 pr-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-950 focus:bg-white disabled:opacity-60"
                 />
               </div>
@@ -142,8 +138,8 @@ export const AdminLoginPage: React.FC = () => {
                   autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter admin password"
-                  disabled={lockoutSeconds > 0}
+                  placeholder={isAdminSetupRequired ? "Create a strong password (12+ characters)" : "Enter admin password"}
+                  disabled={isSubmitting}
                   className="w-full pl-10 pr-10 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-950 focus:bg-white disabled:opacity-60"
                 />
                 <button
@@ -157,6 +153,24 @@ export const AdminLoginPage: React.FC = () => {
               </div>
             </div>
 
+            {isAdminSetupRequired && (
+              <div className="space-y-1.5">
+                <label htmlFor="admin-confirm-password" className="block text-xs font-bold text-slate-700">Confirm Password</label>
+                <input
+                  id="admin-confirm-password"
+                  type={showPassword ? 'text' : 'password'}
+                  required
+                  autoComplete="new-password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="Re-enter your password"
+                  disabled={isSubmitting}
+                  className="w-full px-3.5 py-2.5 text-sm bg-slate-50 border border-slate-300 rounded-xl text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-950 focus:bg-white disabled:opacity-60"
+                />
+                <p className="text-[11px] text-slate-500">Use 12 or more characters. This setup can only be completed once.</p>
+              </div>
+            )}
+
             <button
               type="submit"
               disabled={lockoutSeconds > 0}
@@ -164,9 +178,7 @@ export const AdminLoginPage: React.FC = () => {
             >
               <LogIn className="w-4 h-4 text-amber-400" />
               <span>
-                {lockoutSeconds > 0
-                  ? `Locked (${lockoutSeconds}s)`
-                  : 'Sign In to Admin Dashboard'}
+                {isSubmitting ? 'Please wait…' : isAdminSetupRequired ? 'Create Administrator Account' : 'Sign In to Admin Dashboard'}
               </span>
             </button>
           </form>
