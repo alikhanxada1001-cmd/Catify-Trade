@@ -138,6 +138,7 @@ export interface TradeContextType {
   isAdminAuthenticated: boolean;
   loginAdmin: (username: string, password: string) => Promise<{ success: boolean; message: string }>;
   initializeAdmin: (email: string, password: string) => Promise<{ success: boolean; message: string }>;
+  updateAdminProfile: (currentPassword: string, email: string, newPassword?: string) => Promise<{ success: boolean; message: string }>;
   isAdminSetupRequired: boolean;
   logoutAdmin: () => void;
   searchQuery: string;
@@ -459,6 +460,31 @@ export const TradeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       return { success: true, message: 'Signed in successfully.' };
     } catch {
       return { success: false, message: 'Cannot reach the security service. Check your internet connection and retry.' };
+    }
+  };
+
+  const updateAdminProfile = async (currentPassword: string, email: string, newPassword = ""): Promise<{ success: boolean; message: string }> => {
+    const token = getAdminToken();
+    if (!token) return { success: false, message: "Your admin session has expired. Please sign in again." };
+    try {
+      const response = await fetch(`${API_BASE}/admin/profile`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ currentPassword, email: email.trim().toLowerCase(), newPassword: newPassword || undefined }),
+        signal: AbortSignal.timeout(15000),
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) return { success: false, message: payload.error || "Profile could not be updated." };
+      try {
+        const raw = window.sessionStorage.getItem(ADMIN_SESSION_KEY);
+        const session = raw ? JSON.parse(raw) : {};
+        window.sessionStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify({ ...session, email: payload.email || email.trim().toLowerCase() }));
+      } catch {
+        return { success: false, message: "Profile updated, but session storage failed. Please sign in again." };
+      }
+      return { success: true, message: "Administrator profile updated successfully." };
+    } catch {
+      return { success: false, message: "Cannot reach the security service. Please retry." };
     }
   };
 
@@ -1081,6 +1107,7 @@ export const TradeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         isAdminAuthenticated,
         loginAdmin,
         initializeAdmin,
+        updateAdminProfile,
         isAdminSetupRequired,
         logoutAdmin,
         searchQuery,
