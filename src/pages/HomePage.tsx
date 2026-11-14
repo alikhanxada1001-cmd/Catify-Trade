@@ -311,15 +311,15 @@ export const HomePage: React.FC = () => {
             <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold">
               <ShieldCheck className="w-6 h-6 text-emerald-600" />
             </div>
-            <h3 className="text-base font-bold text-slate-900">Pre-Shipment Quality Audits</h3>
+            <h3 className="text-base font-bold text-slate-900">Quality Check Planning</h3>
             <p className="text-xs text-slate-600 leading-relaxed">
-              On-site factory quality control, tolerance verification, packaging drop tests, and laboratory purity testing before bill of lading issuance and escrow payout.
+              Agree inspection scope, sample checks, packaging requirements and any independent testing with the supplier before placing an order.
             </p>
             <button
               onClick={() => navigateTo('request-quote')}
               className="text-xs font-semibold text-blue-900 hover:text-blue-950 flex items-center gap-1"
             >
-              <span>Request Inspection Quote</span>
+              <span>Discuss Quality Checks</span>
               <ChevronRight className="w-3 h-3" />
             </button>
           </div>
@@ -401,37 +401,37 @@ export const HomePage: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
               <div className="text-xs font-semibold text-amber-600 uppercase tracking-wider">
-                International Commerce Standard
+                Clear Buyer Information
               </div>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
-                Eliminating Friction in Cross-Border Trade &amp; Sourcing
+                Plan Your Wholesale Enquiry
               </h2>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Importing and exporting between continents involves currency fluctuations, customs regulations, and supplier reliability risks. Catify Trade solves these structural challenges through integrated escrow, verified factory audits, and multi-currency bank wire settlements.
+                International sourcing requires clear product specifications, supplier checks, shipping terms and payment safeguards. Catify Trade provides a catalogue and enquiry workflow to help buyers organize those questions before committing.
               </p>
 
               <div className="space-y-3.5 text-xs">
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="font-bold text-slate-900">Zero-Risk Escrow Protection</h4>
-                    <p className="text-slate-500 mt-0.5">Funds are held in secure commercial escrow until you inspect and approve the cargo at the destination port.</p>
+                    <h4 className="font-bold text-slate-900">Confirm Payment Safely</h4>
+                    <p className="text-slate-500 mt-0.5">This website does not provide escrow or hold funds. Independently verify the supplier, contract and payment beneficiary before sending money.</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="font-bold text-slate-900">Multi-Currency Bank Settlement (SWIFT MT103)</h4>
-                    <p className="text-slate-500 mt-0.5">Pay in USD, EUR, GBP, AED, PKR, CNY, or JPY without predatory currency conversion markups.</p>
+                    <h4 className="font-bold text-slate-900">Agree Payment Terms in Writing</h4>
+                    <p className="text-slate-500 mt-0.5">No online payment gateway is connected. Confirm the currency, bank charges, beneficiary and payment schedule directly and independently before any transfer.</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="font-bold text-slate-900">Dedicated Port Trade Desk Agent</h4>
-                    <p className="text-slate-500 mt-0.5">Direct point of contact on WhatsApp (+92 324 7615133) and email (tardecatify@gmail.com) for real-time vessel updates.</p>
+                    <h4 className="font-bold text-slate-900">Direct Contact Options</h4>
+                    <p className="text-slate-500 mt-0.5">Use the WhatsApp and email links to send product or sourcing questions. Response times and any service availability are confirmed individually.</p>
                   </div>
                 </div>
               </div>
@@ -458,32 +458,32 @@ export const HomePage: React.FC = () => {
               <div className="flex items-center gap-4">
                 <img
                   src="/assets/aistudio/Catify_Trade_Circular_Logo_df00bcb5.png"
-                  alt="Catify Trade Official Seal"
+                  alt="Catify Trade Logo"
                   referrerPolicy="no-referrer"
                   className="w-14 h-14 sm:w-16 sm:h-16 object-contain rounded-full border border-amber-400/40 shrink-0"
                 />
                 <div className="min-w-0">
-                  <h3 className="text-base font-bold text-slate-900">Catify Trade International</h3>
-                  <p className="text-xs text-slate-500">Global Trade Network &amp; Sourcing Desk</p>
+                  <h3 className="text-base font-bold text-slate-900">Catify Trade</h3>
+                  <p className="text-xs text-slate-500">Product Discovery &amp; Enquiry Platform</p>
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-xs">
                 <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
-                  <div className="text-slate-500">Incoterms Supported</div>
+                  <div className="text-slate-500">Trade Terms</div>
                   <div className="text-sm font-bold text-slate-900 mt-1">FOB · CIF · DDP · EXW</div>
                 </div>
                 <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
                   <div className="text-slate-500">Customs Clearance</div>
-                  <div className="text-sm font-bold text-slate-900 mt-1">100% Compliant</div>
+                  <div className="text-sm font-bold text-slate-900 mt-1">Discussed per enquiry</div>
                 </div>
                 <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
                   <div className="text-slate-500">Trade Verification</div>
-                  <div className="text-sm font-bold text-slate-900 mt-1">ISO &amp; GOTS Audited</div>
+                  <div className="text-sm font-bold text-slate-900 mt-1">Supplier checks pending</div>
                 </div>
                 <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
                   <div className="text-slate-500">Support Desk</div>
-                  <div className="text-sm font-bold text-emerald-600 mt-1">24/7 WhatsApp Response</div>
+                  <div className="text-sm font-bold text-emerald-600 mt-1">WhatsApp contact</div>
                 </div>
               </div>
 
