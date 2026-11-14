@@ -161,6 +161,18 @@ export default {
         }
       }
 
+      if (route === "inquiries" && request.method === "POST") {
+        const body = await request.json();
+        if (!body.contactPerson || !validEmail(body.email) || !body.cargoDetails || String(body.cargoDetails).trim().length < 10) {
+          return respond({ error: "Please provide your name, a valid email address and a message of at least 10 characters." }, 400);
+        }
+        const id = crypto.randomUUID();
+        const payload = { ...body, id, createdAt: new Date().toISOString(), status: "new" };
+        await env.DB.prepare("INSERT INTO trade_inquiries(id,company_name,email,status,data_json) VALUES(?,?,?,'new',?)")
+          .bind(id, String(body.companyName || "").slice(0, 180), String(body.email).trim().toLowerCase(), JSON.stringify(payload)).run();
+        return respond({ ok: true, id }, 201);
+      }
+
       if (route === "rfqs" && request.method === "POST") {
         const body = await request.json();
         if (!body.buyerName || !validEmail(body.buyerEmail) || !body.productTitle || !Number.isFinite(Number(body.quantity)) || Number(body.quantity) < 1) return respond({ error: "Please provide a product, valid email, contact name, and quantity." }, 400);
